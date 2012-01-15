@@ -1,0 +1,14 @@
+*.suo
+bin
+obj
+*.pidb
+*.userprefs
+*.user
+*.testsettings
+*.vsmdi
+
+TestResults*
+Kyzog.Sandbox*
+Kyzog.BuildScripts*
+Kyzog.InterviewQuestions*
+Kyzog.Personal.sln

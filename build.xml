@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="Kyzog" default="all-targets">
+	<target name="all-targets" depends="compile-mstest" />
+	<target name="compile-mstest">
+		<exec
+		 dir='.'
+		 executable='${build.tools.msbuild4.0}'
+		 errorproperty='compile.error'
+		 outputproperty='compile.output'
+		 resultproperty='compile.result'>
+			<arg line='"Kyzog.sln"' />
+			<arg line='/p:Configuration=Release' />
+			<arg line='/p:WarningLevel=4' />
+			<arg line='/p:TreatWarningsAsErrors=true' />
+			<arg line='/p:DevEnvDir="c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE"' />
+			<arg line='/p:DefineConstants="MSTest"' />
+			<arg line='/T:Clean;Build' />
+			<!--<arg line='/v:quiet' />-->
+		</exec>
+		<echo message='${compile.output}' />
+		<fail>
+			<condition>
+				<not>
+					<contains string="${compile.output}" substring="Build succeeded." casesensitive="" />
+				</not>
+			</condition>
+		</fail>
+	</target>
+	<target name="compile-nunit">
+		<exec
+		 dir='.'
+		 executable='${build.tools.msbuild4.0}'
+		 errorproperty='compile.error'
+		 outputproperty='compile.output'
+		 resultproperty='compile.result'>
+			<arg line='"Kyzog.sln"' />
+			<arg line='/p:Configuration=Release' />
+			<arg line='/p:WarningLevel=4' />
+			<arg line='/p:TreatWarningsAsErrors=true' />
+			<arg line='/p:DevEnvDir="c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE"' />
+			<arg line='/T:Clean;Build' />
+			<!--<arg line='/v:quiet' />-->
+		</exec>
+		<echo message='${compile.output}' />
+		<fail>
+			<condition>
+				<not>
+					<contains string="${compile.output}" substring="Build succeeded." casesensitive="" />
+				</not>
+			</condition>
+		</fail>
+	</target>
+	<target name="execute-unittests-nunit">
+		<exec
+		 dir='.'
+		 executable='${build.tools.nunit}'
+		 errorproperty='nunit.error'
+		 outputproperty='nunit.output'
+		 resultproperty='nunit.result'>
+			<arg line='"Kyzog.UnitTests\Kyzog.UnitTests.csproj"' />
+		</exec>
+		<echo message='${nunit.output}' />
+		<fail>
+			<condition>
+				<and>
+					<not>
+						<contains string="${nunit.output}" substring="Errors: 0" casesensitive="" />
+					</not>
+					<not>
+						<contains string="${nunit.output}" substring="Failues: 0" casesensitive="" />
+					</not>
+				</and>
+			</condition>
+		</fail>
+	</target>
+</project>
