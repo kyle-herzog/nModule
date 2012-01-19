@@ -8,7 +8,7 @@
 		 errorproperty='compile.error'
 		 outputproperty='compile.output'
 		 resultproperty='compile.result'>
-			<arg line='"Kyzog.sln"' />
+			<arg line='"nModule.sln"' />
 			<arg line='/p:Configuration=Release' />
 			<arg line='/p:WarningLevel=4' />
 			<arg line='/p:TreatWarningsAsErrors=true' />
@@ -33,7 +33,7 @@
 		 errorproperty='compile.error'
 		 outputproperty='compile.output'
 		 resultproperty='compile.result'>
-			<arg line='"Kyzog.sln"' />
+			<arg line='"nModule.sln"' />
 			<arg line='/p:Configuration=Release' />
 			<arg line='/p:WarningLevel=4' />
 			<arg line='/p:TreatWarningsAsErrors=true' />
