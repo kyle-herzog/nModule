@@ -1,10 +1,6 @@
 <UserSettings>
 	<ApplicationIdentity version="10.0"/>
-	<ToolsOptions>
-		<ToolsOptionsCategory name="TextEditor" RegisteredName="TextEditor">
-			<ToolsOptionsSubCategory name="AllLanguages" RegisteredName="AllLanguages" PackageName="Text Management Package"/>
-		</ToolsOptionsCategory>
-	</ToolsOptions>
+	<ToolsOptions/>
 	<Category name="Database Tools" RegisteredName="Database Tools"/>
 	<Category name="Environment_Group" RegisteredName="Environment_Group">
 		<Category name="Environment_CommandBars" Category="{B9D9C123-B500-4202-B887-57C829CBD08F}" Package="{DA9FB551-C724-11d0-AE1F-00A0C90FFFC3}" RegisteredName="Environment_CommandBars" PackageName="Visual Studio Environment Package">
@@ -31,6 +27,87 @@
 			<PropertyValue name="ShowLargeButtons">false</PropertyValue>
 			<PropertyValue name="ShowScreenTips">true</PropertyValue>
 			<PropertyValue name="ShowScreenTipShortcutKeys">false</PropertyValue>
+		</Category>
+		<Category name="Environment_ExternalTools" Category="{E8FAE9E8-FBA2-4474-B134-AB0FFCFB291D}" Package="{DA9FB551-C724-11d0-AE1F-00A0C90FFFC3}" RegisteredName="Environment_ExternalTools" PackageName="Visual Studio Environment Package">
+			<PropertyValue name="Create &amp;GUID.Command">%vsspv_windows_sdk_dir%\bin\NETFX 4.0 Tools\guidgen.exe</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.Arguments"/>
+			<PropertyValue name="Create &amp;GUID.InitialDirectory">%vsspv_windows_sdk_dir%\bin\NETFX 4.0 Tools\</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.SourceKeyName">Create GUID</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.UseOutputWindow">false</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.PromptForArguments">false</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.CloseOnExit">false</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.IsGUIapp">true</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.SaveAllDocs">true</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.UseTaskList">false</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.Unicode">false</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.Package">{DA9FB551-C724-11D0-AE1F-00A0C90FFFC3}</PropertyValue>
+			<PropertyValue name="Create &amp;GUID.NameID">14453</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.Command">%vsspv_vs_install_directory%\PreEmptive Solutions\Dotfuscator Community Edition\Dotfuscator.exe</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.Arguments"/>
+			<PropertyValue name="Dot&amp;fuscator Software Services.InitialDirectory">$(TargetDir)</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.SourceKeyName">Dot&amp;fuscator Software Services</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.UseOutputWindow">false</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.PromptForArguments">false</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.CloseOnExit">false</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.IsGUIapp">true</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.SaveAllDocs">true</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.UseTaskList">false</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.Unicode">false</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.Package">{00000000-0000-0000-0000-000000000000}</PropertyValue>
+			<PropertyValue name="Dot&amp;fuscator Software Services.NameID">0</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.Command">%vsspv_vs_install_directory%\Common7\Tools\errlook.exe</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.Arguments"/>
+			<PropertyValue name="Error Loo&amp;kup.InitialDirectory">$(TargetDir)</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.SourceKeyName">Error Loo&amp;kup</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.UseOutputWindow">false</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.PromptForArguments">false</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.CloseOnExit">false</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.IsGUIapp">true</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.SaveAllDocs">true</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.UseTaskList">false</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.Unicode">false</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.Package">{1B027A40-8F43-11D0-8D11-00A0C91BC942}</PropertyValue>
+			<PropertyValue name="Error Loo&amp;kup.NameID">1301</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.Command">%vsspv_vs_install_directory%\Common7\Tools\AtlTraceTool8.exe</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.Arguments"/>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.InitialDirectory">%vsspv_vs_install_directory%\Common7\Tools\</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.SourceKeyName">MFC/ATL &amp;Trace Tool</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.UseOutputWindow">false</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.PromptForArguments">false</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.CloseOnExit">false</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.IsGUIapp">true</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.SaveAllDocs">true</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.UseTaskList">false</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.Unicode">false</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.Package">{F1C25864-3097-11D2-A5C5-00C04F7968B4}</PropertyValue>
+			<PropertyValue name="ATL/MFC &amp;Trace Tool.NameID">10052</PropertyValue>
+			<PropertyValue name="Spy&amp;++.Command">%vsspv_vs_install_directory%\Common7\Tools\spyxx.exe</PropertyValue>
+			<PropertyValue name="Spy&amp;++.Arguments"/>
+			<PropertyValue name="Spy&amp;++.InitialDirectory">%vsspv_vs_install_directory%\Common7\Tools\</PropertyValue>
+			<PropertyValue name="Spy&amp;++.SourceKeyName">Sp&amp;y++</PropertyValue>
+			<PropertyValue name="Spy&amp;++.UseOutputWindow">false</PropertyValue>
+			<PropertyValue name="Spy&amp;++.PromptForArguments">false</PropertyValue>
+			<PropertyValue name="Spy&amp;++.CloseOnExit">false</PropertyValue>
+			<PropertyValue name="Spy&amp;++.IsGUIapp">true</PropertyValue>
+			<PropertyValue name="Spy&amp;++.SaveAllDocs">true</PropertyValue>
+			<PropertyValue name="Spy&amp;++.UseTaskList">false</PropertyValue>
+			<PropertyValue name="Spy&amp;++.Unicode">false</PropertyValue>
+			<PropertyValue name="Spy&amp;++.Package">{F1C25864-3097-11D2-A5C5-00C04F7968B4}</PropertyValue>
+			<PropertyValue name="Spy&amp;++.NameID">10051</PropertyValue>
+			<PropertyValue name="CommandLine.Command">C:\Windows\System32\cmd.exe</PropertyValue>
+			<PropertyValue name="CommandLine.Arguments">/C $(ItemPath)</PropertyValue>
+			<PropertyValue name="CommandLine.InitialDirectory">$(ItemDir)</PropertyValue>
+			<PropertyValue name="CommandLine.SourceKeyName"/>
+			<PropertyValue name="CommandLine.UseOutputWindow">true</PropertyValue>
+			<PropertyValue name="CommandLine.PromptForArguments">false</PropertyValue>
+			<PropertyValue name="CommandLine.CloseOnExit">true</PropertyValue>
+			<PropertyValue name="CommandLine.IsGUIapp">false</PropertyValue>
+			<PropertyValue name="CommandLine.SaveAllDocs">true</PropertyValue>
+			<PropertyValue name="CommandLine.UseTaskList">false</PropertyValue>
+			<PropertyValue name="CommandLine.Unicode">false</PropertyValue>
+			<PropertyValue name="CommandLine.Package">{00000000-0000-0000-0000-000000000000}</PropertyValue>
+			<PropertyValue name="CommandLine.NameID">0</PropertyValue>
+			<PropertyValue name="ToolNames">Create &amp;GUID, Dot&amp;fuscator Software Services, Error Loo&amp;kup, ATL/MFC &amp;Trace Tool, Spy&amp;++, CommandLine</PropertyValue>
 		</Category>
 	</Category>
 </UserSettings>
