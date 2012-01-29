@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyzog", "Kyzog\Kyzog.csproj", "{DA56AA91-8C7D-47F5-9D89-94C00203A4A2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{E955CC2F-3A45-4914-B857-3690EA46D5ED}"
 	ProjectSection(SolutionItems) = preProject
 		build.properties = build.properties
@@ -10,16 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{E955CC
 		runAnt.bat = runAnt.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyzog.UnitTests", "Kyzog.UnitTests\Kyzog.UnitTests.csproj", "{06C12896-ED19-42EB-B09D-EF58EA8B40E2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{592417B1-F6FE-45CD-ABB0-5B45147CD3A8}"
-	ProjectSection(SolutionItems) = preProject
-		README.txt = README.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nModule", "nModule\nModule.csproj", "{AACD4DBC-701E-4D74-B9F6-FA301BAAAA5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nModule.UnitTests", "nModule.UnitTests\nModule.UnitTests.csproj", "{71AD73EC-C7D2-4BF6-ACDA-2C68D5F21D11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nModule.UnitTests", "nModule.UnitTests\nModule.UnitTests.csproj", "{8CCAA0AE-B48C-4CD3-81FE-5167E6A72125}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,22 +20,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DA56AA91-8C7D-47F5-9D89-94C00203A4A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA56AA91-8C7D-47F5-9D89-94C00203A4A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA56AA91-8C7D-47F5-9D89-94C00203A4A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA56AA91-8C7D-47F5-9D89-94C00203A4A2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06C12896-ED19-42EB-B09D-EF58EA8B40E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06C12896-ED19-42EB-B09D-EF58EA8B40E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06C12896-ED19-42EB-B09D-EF58EA8B40E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06C12896-ED19-42EB-B09D-EF58EA8B40E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AACD4DBC-701E-4D74-B9F6-FA301BAAAA5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AACD4DBC-701E-4D74-B9F6-FA301BAAAA5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AACD4DBC-701E-4D74-B9F6-FA301BAAAA5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AACD4DBC-701E-4D74-B9F6-FA301BAAAA5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71AD73EC-C7D2-4BF6-ACDA-2C68D5F21D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71AD73EC-C7D2-4BF6-ACDA-2C68D5F21D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71AD73EC-C7D2-4BF6-ACDA-2C68D5F21D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71AD73EC-C7D2-4BF6-ACDA-2C68D5F21D11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CCAA0AE-B48C-4CD3-81FE-5167E6A72125}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CCAA0AE-B48C-4CD3-81FE-5167E6A72125}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CCAA0AE-B48C-4CD3-81FE-5167E6A72125}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CCAA0AE-B48C-4CD3-81FE-5167E6A72125}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

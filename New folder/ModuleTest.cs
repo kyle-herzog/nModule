@@ -255,12 +255,7 @@ namespace nModule.UnitTests
 		{
 			bool onDisposeCalled = false;
 			Module target = TestUtilities.CreateStubModule("Module");
-			target.Stub(x => x.OnDispose()).Do((System.Action)delegate 
-			    { 
-					onDisposeCalled = true; 
-					System.Threading.Thread.Sleep(1000); 
-				}
-			);
+			target.Stub(x => x.OnDispose()).Do((System.Threading.ThreadStart)delegate { onDisposeCalled = true; System.Threading.Thread.Sleep(1000); });
 			System.Threading.Thread thread = new System.Threading.Thread((System.Threading.ThreadStart)delegate
 				{
 					target.Dispose();
@@ -276,37 +271,10 @@ namespace nModule.UnitTests
 		}
 
 		[Test]
-		public void Poll_Void_OnPollCalled()
+		public void Poll_Void_ModuleStatusUpdated()
 		{
-			Nullable<bool> onPollCalled = null;
 			Module target = TestUtilities.CreateStubModule("Module");
-			target.Stub (x => x.OnPoll()).Do ((System.Action)delegate 
-			    { 
- 					onPollCalled = true;
-				}
-			);
 			
-			target.Poll();
-			Assert.IsTrue(onPollCalled.HasValue);
-			Assert.IsTrue(onPollCalled.Value);
-		}
-		
-		[Test]
-		public void Poll_Void_OnPollSetIsPolling()
-		{
-			Nullable<bool> onPollCalled = null;
-			Module target = TestUtilities.CreateStubModule("Module");
-			target.Stub (x => x.OnPoll()).Do ((System.Action)delegate { 
-				onPollCalled = true;
-				System.Threading.Thread.Sleep(10000);
-			});
-			System.Threading.Thread thread = new System.Threading.Thread((System.Threading.ThreadStart)delegate
-			    {
-					
-				}
-			);
-			Assert.IsTrue(onPollCalled.HasValue);
-			Assert.IsTrue(onPollCalled.Value);
 		}
 
 	}

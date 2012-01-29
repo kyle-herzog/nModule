@@ -1,13 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project name="Kyzog" default="all-targets">
-	<target name="all-targets" depends="compile-mstest" />
+<project name="nModule" default="all-targets">
+	
+	<target name="open-targets" depends="compile-nunit,execute-unittests-nunit" />
+	<target name="ms-targets" depends="compile-mstest,execute-unittests-mstest" />
+	<target name="all-targets" depends="open-targets,ms-targets" />
+
+	<!-- open-targets -->
+	<target name="compile-nunit">
+		<exec
+		 dir='.'
+		 executable='${build.tools.msbuild4.0}'
+		 failonerror='true'>
+			<arg line='"nModule.sln"' />
+			<arg line='/p:Configuration=Release' />
+			<arg line='/p:WarningLevel=4' />
+			<arg line='/p:TreatWarningsAsErrors=true' />
+			<arg line='/p:DevEnvDir="c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE"' />
+			<arg line='/T:Clean;Build' />
+			<arg line='/verbosity:minimal' />
+			<arg line='/nologo' />
+		</exec>
+	</target>
+	<target name="execute-unittests-nunit">
+		<exec
+		 dir='.'
+		 executable='${build.tools.nunit}'
+		 failonerror='true'>
+			<arg line='/result="${build.output.unittestsfile}"' />
+			<arg line='"nModule.UnitTests\bin\Release\nModule.UnitTests.dll"' />
+		</exec>
+	</target>
+
+	<!-- nunit-targets -->
 	<target name="compile-mstest">
 		<exec
 		 dir='.'
 		 executable='${build.tools.msbuild4.0}'
-		 errorproperty='compile.error'
-		 outputproperty='compile.output'
-		 resultproperty='compile.result'>
+		 failonerror='true'>
 			<arg line='"nModule.sln"' />
 			<arg line='/p:Configuration=Release' />
 			<arg line='/p:WarningLevel=4' />
@@ -15,62 +44,16 @@
 			<arg line='/p:DevEnvDir="c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE"' />
 			<arg line='/p:DefineConstants="MSTest"' />
 			<arg line='/T:Clean;Build' />
-			<!--<arg line='/v:quiet' />-->
+			<arg line='/verbosity:minimal' />
+			<arg line='/nologo' />
 		</exec>
-		<echo message='${compile.output}' />
-		<fail>
-			<condition>
-				<not>
-					<contains string="${compile.output}" substring="Build succeeded." casesensitive="" />
-				</not>
-			</condition>
-		</fail>
 	</target>
-	<target name="compile-nunit">
+	<target name='execute-unittests-mstest'>
 		<exec
-		 dir='.'
-		 executable='${build.tools.msbuild4.0}'
-		 errorproperty='compile.error'
-		 outputproperty='compile.output'
-		 resultproperty='compile.result'>
-			<arg line='"nModule.sln"' />
-			<arg line='/p:Configuration=Release' />
-			<arg line='/p:WarningLevel=4' />
-			<arg line='/p:TreatWarningsAsErrors=true' />
-			<arg line='/p:DevEnvDir="c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE"' />
-			<arg line='/T:Clean;Build' />
-			<!--<arg line='/v:quiet' />-->
-		</exec>
-		<echo message='${compile.output}' />
-		<fail>
-			<condition>
-				<not>
-					<contains string="${compile.output}" substring="Build succeeded." casesensitive="" />
-				</not>
-			</condition>
-		</fail>
+			executable="${build.tools.mstest}"
+			failonerror="true">
+			<arg line="/testcontainer:nModule.UnitTests\bin\Release\nModule.UnitTests.dll" />
+		</exec>	
 	</target>
-	<target name="execute-unittests-nunit">
-		<exec
-		 dir='.'
-		 executable='${build.tools.nunit}'
-		 errorproperty='nunit.error'
-		 outputproperty='nunit.output'
-		 resultproperty='nunit.result'>
-			<arg line='"Kyzog.UnitTests\Kyzog.UnitTests.csproj"' />
-		</exec>
-		<echo message='${nunit.output}' />
-		<fail>
-			<condition>
-				<and>
-					<not>
-						<contains string="${nunit.output}" substring="Errors: 0" casesensitive="" />
-					</not>
-					<not>
-						<contains string="${nunit.output}" substring="Failues: 0" casesensitive="" />
-					</not>
-				</and>
-			</condition>
-		</fail>
-	</target>
+		
 </project>

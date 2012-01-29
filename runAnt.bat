@@ -1,2 +1,1 @@
-@echo off
-ant -propertyfile .\build.properties compile-mstest
+ant -propertyfile .\build.properties all-targets

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="D:\dev\Kyzog\nModule\nModule.UnitTests\bin\Release\nModule.UnitTests.dll" total="32" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2012-01-18" time="18:00:08">
+  <environment nunit-version="2.6.0.11340" clr-version="2.0.50727.5448" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="D:\dev\Kyzog\nModule" machine-name="FRANKENTOP" user="Kyle" user-domain="Frankentop" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="D:\dev\Kyzog\nModule\nModule.UnitTests\bin\Release\nModule.UnitTests.dll" executed="True" result="Success" success="True" time="2.009" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="nModule" executed="True" result="Success" success="True" time="1.980" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="UnitTests" executed="True" result="Success" success="True" time="1.980" asserts="0">
+            <results>
+              <test-suite type="TestFixture" name="IModuleTest" executed="True" result="Success" success="True" time="0.652" asserts="0">
+                <results>
+                  <test-case name="nModule.UnitTests.IModuleTest.Dispose_DisposesModule" executed="True" result="Success" success="True" time="0.569" asserts="1" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModuleId_IsGreaterThanZero" executed="True" result="Success" success="True" time="0.010" asserts="1" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModuleInstantiation_IsReturned" executed="True" result="Success" success="True" time="0.017" asserts="1" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModuleName_IsReturned" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModulePriority_IsAssignable" executed="True" result="Success" success="True" time="0.009" asserts="2" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModulePriority_IsReturned" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModuleState_ConstructorIsNotInitialized" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModuleStatus_ReturnsValue" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                  <test-case name="nModule.UnitTests.IModuleTest.ModuleType_IsReturned" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="ModuleTest" executed="True" result="Success" success="True" time="1.319" asserts="0">
+                <results>
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_EmptyString_ModuleNameIsEmptyString" executed="True" result="Success" success="True" time="0.112" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_DefaultModuleInstantiationIsCorrect" executed="True" result="Success" success="True" time="0.006" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_IsMockModule" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_ModuleIdIsGenerated" executed="True" result="Success" success="True" time="0.017" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_ModuleIdIsUniquelyGenerated" executed="True" result="Success" success="True" time="0.004" asserts="3" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_ModuleNameIsStringValue" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_ModulePriorityDefault" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_ModuleStateIsNotInitialized" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_ModuleStatusIsNotNullOrEmpty" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_String_ModuleTypeIsSet" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_Void_IsDisposedIsFalse" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Constructor_Void_IsDisposingIsFalse" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Dispose_Void_IsDisposedIsTrue" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Dispose_Void_OnDisposeCalled" executed="True" result="Success" success="True" time="0.012" asserts="2" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Dispose_Void_OnDisposeSetsIsDisposing" executed="True" result="Success" success="True" time="1.104" asserts="4" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Initialize_Void_ModuleStateIsHealthy" executed="True" result="Success" success="True" time="0.005" asserts="2" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Initialize_Void_ModuleStatusIsNotNullOrEmpty" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.InternalInitialize_Void_ModuleStateIsErrored" executed="True" result="Success" success="True" time="0.003" asserts="2" />
+                  <test-case name="nModule.UnitTests.ModuleTest.ModuleInstantiation_Override_InstantiableSingleton" executed="True" result="Success" success="True" time="0.003" asserts="2" />
+                  <test-case name="nModule.UnitTests.ModuleTest.ModuleInstantiation_Override_IsInstantiable" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.ModuleInstantiation_Override_IsSingleton" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="nModule.UnitTests.ModuleTest.ModulePriority_CustomPriority_IsAssignable" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                  <test-case name="nModule.UnitTests.ModuleTest.Poll_Void_ModuleStatusUpdated" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

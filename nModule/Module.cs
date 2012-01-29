@@ -188,7 +188,7 @@ namespace nModule
 		}
 
 		/// <summary>
-		/// TODO: Fill in this comment
+		/// When overridden in a subclass this will provide custom polling actions for the sub-instantiated module.
 		/// </summary>
 		protected internal virtual void OnPoll() { }
 
