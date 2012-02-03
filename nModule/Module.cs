@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace nModule
 {
@@ -30,8 +31,22 @@ namespace nModule
 		
 		#endregion Static Members
 
+		#region Events
+
+		/// <summary>
+		/// The Event triggered when a Module is Polled.
+		/// </summary>
+		public event EventHandler<ModuleEventArgs> ModulePolled;
+
+		#endregion Events
+
+		#region Fields
+
+		private Thread _pollingThread;
 		private string _moduleName;
 		private int _moduleId;
+
+		#endregion
 
 		#region Properties
 
@@ -90,6 +105,20 @@ namespace nModule
 		/// </summary>
 		public bool IsDisposing { get; private set; }
 
+		/// <summary>
+		/// Value stating whether or not this module is being Polled.
+		/// </summary>
+		public bool IsPolling { get; private set; }
+
+		/// <summary>
+		/// Value statin whether or not this module will automatically poll itself to ensure its stability.
+		/// </summary>
+		public virtual bool IsAutoPollingModule { get { return true; } }
+		/// <summary>
+		/// How often, in milliseconds, the Module with automatically poll itself.
+		/// </summary>
+		public int ModuleAutoPollFrequency { get; set; }
+
 		#endregion Properties
 
 		#region Constructors
@@ -114,10 +143,10 @@ namespace nModule
 			_moduleId = GenerateModuleId();
 			InternalModuleStatus = "Instantiated";
 			InternalModuleState = ModuleState.NotInitialized;
+			ModuleAutoPollFrequency = 1000;
 		}
 
 		#endregion Constructors
-
 
 		#region Methods
 
@@ -131,8 +160,17 @@ namespace nModule
 			try
 			{
 				OnInitialize();
+				_pollingThread = new Thread(() =>
+					{
+						while (!IsDisposed && !IsDisposing)
+						{
+							Thread.Sleep(ModuleAutoPollFrequency);
+							Poll();
+						}
+					}
+				);
+				_pollingThread.Start();
 				InternalModuleState = ModuleState.Healthy;
-				InternalModuleStatus = "The Module is now initialized";
 			}
 			catch (Exception ex)
 			{
@@ -144,9 +182,7 @@ namespace nModule
 		/// <summary>
 		/// When overridden in a derived class, initializes the module to a working state. 
 		/// </summary>
-        protected internal virtual void OnInitialize() 
-		{
-		}
+        protected internal virtual void OnInitialize() { }
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -154,16 +190,19 @@ namespace nModule
 		public void Dispose()
 		{
 			IsDisposing = true;
-            try
-            {
-                OnDispose();
-			    IsDisposed = true;
-            }
-            catch
-            {
-                InternalModuleStatus = "An error occured when disposing the module";
-            }
-			IsDisposing = false;
+			try
+			{
+				OnDispose();
+				IsDisposed = true;
+			}
+			catch
+			{
+				InternalModuleStatus = "An error occured when disposing the module";
+			}
+			finally
+			{
+				IsDisposing = false;
+			}
 		}
 
         /// <summary>
@@ -178,19 +217,31 @@ namespace nModule
 		{
 			try
 			{
+				IsPolling = true;
 				OnPoll();
+				InternalPoll();
 			}
 			catch
 			{
 				InternalModuleStatus = "An error occured when polling the module.";
 				InternalModuleState = ModuleState.Error;
 			}
+			finally
+			{
+				IsPolling = false;
+			}
+		}
+
+		internal void OnPoll()
+		{
+			if (ModulePolled != null)
+					ModulePolled(this, new ModuleEventArgs(ModuleName, ModuleId, System.Threading.Thread.CurrentThread.Name, System.Threading.Thread.CurrentThread.ManagedThreadId));
 		}
 
 		/// <summary>
 		/// When overridden in a subclass this will provide custom polling actions for the sub-instantiated module.
 		/// </summary>
-		protected internal virtual void OnPoll() { }
+		protected internal virtual void InternalPoll() { }
 
 		#endregion Methods
 	}

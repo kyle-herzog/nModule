@@ -6,9 +6,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{E955CC
 		build.properties = build.properties
 		build.xml = build.xml
 		runAnt.bat = runAnt.bat
+		runAntMSTargets.bat = runAntMSTargets.bat
+		runAntNUnit.bat = runAntNUnit.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{592417B1-F6FE-45CD-ABB0-5B45147CD3A8}"
+	ProjectSection(SolutionItems) = preProject
+		MSTest.Results.xml = MSTest.Results.xml
+		NUnitTests.Results.xml = NUnitTests.Results.xml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nModule", "nModule\nModule.csproj", "{AACD4DBC-701E-4D74-B9F6-FA301BAAAA5C}"
 EndProject

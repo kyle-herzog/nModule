@@ -39,13 +39,25 @@ namespace nModule
 		/// Initializes the Module to a working state.
 		/// </summary>
 		void Initialize();
-
 		/// <summary>
 		/// Polls the module to force an update of its ModuleStatus
 		/// </summary>
 		void Poll();
+		/// <summary>
+		/// Value stating whether or not the Module is being Polled.
+		/// </summary>
+		bool IsPolling { get; }
+		/// <summary>
+		/// Value stating whether or not the Module should initiave a PollingThread
+		/// </summary>
+		bool IsAutoPollingModule { get; }
+		/// <summary>
+		/// How often, in milliseconds, the Module with automatically poll itself.
+		/// </summary>
+		int ModuleAutoPollFrequency { get; set; }
 
 		//TODO IsPolling
+		//TODO IsAutoPollingModule
 		//TODO PollWaitTime
     }
 }

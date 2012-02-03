@@ -25,15 +25,24 @@ namespace nModule.UnitTests
 			}
 		}
 
-		private class ConcreteBaseModule : Module
+		private class ConcreteModule : Module
 		{
-			public ConcreteBaseModule() : base() { }
-			public ConcreteBaseModule(string name) : base(name) { }
+			public ConcreteModule() : base() { }
+			public ConcreteModule(string name) : base(name) { }
 
 			public override string ModuleType
 			{
 				get { return "Concrete Module"; }
 			}
+		}
+
+		private class ConcreteNonAutoPollingModule : Module
+		{
+			public ConcreteNonAutoPollingModule() : base() { }
+			public ConcreteNonAutoPollingModule(string name) : base(name) { }
+
+			public override string ModuleType { get { return "ConcreteNonAutoPollingModule"; } }
+			public override bool IsAutoPollingModule { get { return false; } }
 		}
 
 		private class ConcreteSlowDisposingModule : Module
@@ -55,7 +64,7 @@ namespace nModule.UnitTests
 		internal static Module CreateStubModule(string name)
 		{
 			Module module = Rhino.Mocks.MockRepository.GenerateStub<Module>(name);
-			module.Stub(x => x.ModuleType).Return(String.Format("Mock{0}", name));
+			module.Stub(x => x.ModuleType).Return(String.Format("Mock {0}", name));
 			return module;
 		}
 
@@ -99,7 +108,12 @@ namespace nModule.UnitTests
 
 		internal static Module CreateConcreteBaseModule(string name)
 		{
-			return new ConcreteBaseModule(name);
+			return new ConcreteModule(name);
+		}
+
+		internal static Module CreateConcreteNonAutoPollingModule(string name)
+		{
+			return new ConcreteNonAutoPollingModule(name);
 		}
 	}
 }

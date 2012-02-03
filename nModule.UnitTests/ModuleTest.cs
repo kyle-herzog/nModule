@@ -1,14 +1,16 @@
-﻿using System;
-using System.Linq;
-using nModule;
-using Rhino.Mocks;
-#if MSTest
+﻿#if MSTest
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestFixture = Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute;
 using Test = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
 #else
 using NUnit.Framework;
 #endif
+using System;
+using System.Threading;
+using System.Diagnostics;
+using nModule;
+using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace nModule.UnitTests
 {
@@ -17,7 +19,7 @@ namespace nModule.UnitTests
 	///to contain all ModuleTest Unit Tests
 	///</summary>
 	[TestFixture()]
-	public class ModuleTest
+	public partial class ModuleTest
 	{
 		private TestContext testContextInstance;
 
@@ -48,6 +50,150 @@ namespace nModule.UnitTests
 		#endregion Test HelperMethods
 
 		/// <summary>
+		/// A Module test to ensure that the value of a Module's ModulePriority is assignable
+		/// </summary>
+		[Test]
+		public void ModulePriority_CustomPriority_IsAssignable()
+		{
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			Assert.AreEqual(0, target.ModulePriority);
+			target.ModulePriority = 5000;
+			Assert.AreEqual(5000, target.ModulePriority);
+		}
+
+		[Test]
+		public void Initialize_Void_ModuleStateIsHealthy()
+		{
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			Assert.AreEqual(ModuleState.NotInitialized, target.ModuleState);
+			target.Initialize();
+			Assert.AreEqual(ModuleState.Healthy, target.ModuleState);
+		}
+
+		[Test]
+		public void Initialize_Void_ModuleStatusIsNotNullOrEmpty()
+		{
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			target.Initialize();
+            Assert.IsFalse(String.IsNullOrEmpty(target.ModuleStatus));
+		}
+
+		[Test]
+		public void InternalInitialize_Void_ModuleStateIsErrored()
+		{
+			Module target = TestUtilities.CreateInitializedErrorConcreteModule("Test Target Module");
+			Assert.AreEqual(ModuleState.NotInitialized, target.ModuleState);
+			target.Initialize();
+			Assert.AreEqual(ModuleState.Error, target.ModuleState);
+		}
+
+		[Test]
+		public void Dispose_Void_IsDisposedIsTrue()
+		{
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			target.Dispose();
+			Assert.IsTrue(target.IsDisposed);			
+		}
+
+		[Test]
+		public void Dispose_Void_OnDisposeCalled()
+		{
+			Nullable<bool> onDisposeCalled = null;
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			target.Stub(x => x.OnDispose()).Do((System.Action)delegate { onDisposeCalled = true; });
+			target.Dispose();
+			Assert.IsTrue(onDisposeCalled.HasValue);
+			Assert.IsTrue(onDisposeCalled.Value);
+		}
+
+		[Test]
+		public void Dispose_Void_OnDisposeSetsIsDisposing()
+		{
+			bool onDisposeCalled = false;
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			target.Stub(x => x.OnDispose()).Do((System.Action)delegate 
+			    { 
+					onDisposeCalled = true; 
+					Thread.Sleep(1000); 
+				}
+			);
+			Thread thread = new Thread((ThreadStart)delegate
+				{
+					target.Dispose();
+				}
+			);
+			thread.Start();
+			Thread.Sleep(100);
+			Assert.IsTrue(onDisposeCalled);
+			Assert.IsTrue(target.IsDisposing);
+			Thread.Sleep(1000);
+			Assert.IsFalse(target.IsDisposing);
+			Assert.IsTrue(target.IsDisposed);
+		}
+		[Test]
+		public void Poll_Void_InternalPollCalled()
+		{
+			Nullable<bool> InternalPollCalled = null;
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			target.Stub(x => x.InternalPoll()).Do((System.Action)delegate
+				{
+					InternalPollCalled = true;
+				}
+			);
+			target.Poll();
+			Assert.IsTrue(InternalPollCalled.HasValue, "InternalPollCalled does not have a value set");
+			Assert.IsTrue(InternalPollCalled.Value);
+		}
+
+		[Test]
+		public void Poll_Void_PollSetsIsPolling()
+		{
+			Nullable<bool> InternalPollCalled = null;
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			target.Stub(x => x.InternalPoll()).Do((System.Action)delegate
+				{
+					InternalPollCalled = true;
+					System.Threading.Thread.Sleep(1000);
+				}
+			);
+			Thread thread = new Thread((ThreadStart)delegate
+				{
+					target.Poll();
+				}
+			);
+			thread.Start();
+			System.Threading.Thread.Sleep(100);
+			Assert.IsTrue(InternalPollCalled.HasValue);
+			Assert.IsTrue(InternalPollCalled.Value);
+			Assert.IsTrue(target.IsPolling);
+			System.Threading.Thread.Sleep(1000);
+			Assert.IsFalse(target.IsPolling);
+		}
+
+		[Test]
+		public void IsAutoPollingModule_True()
+		{
+			Module target = TestUtilities.CreateConcreteBaseModule("Test Target Module");
+			Assert.IsTrue(target.IsAutoPollingModule);
+		}
+
+		[Test]
+		public void IsAutoPollingModule_Overridden_False()
+		{
+			Module target = TestUtilities.CreateMockModule("Test Target Module");
+			target.Stub(x => x.IsAutoPollingModule).Return(false);
+			Assert.IsFalse(target.IsAutoPollingModule);
+		}
+
+		[Test]
+		public void IsAutoPollingModule_Overridden_True()
+		{
+			Module target = TestUtilities.CreateMockModule("Test Target Module");
+			target.Stub(x => x.IsAutoPollingModule).Return(true);
+			Assert.IsTrue(target.IsAutoPollingModule);
+		}
+
+		/// <summary>
 		///A test for ModuleName being set to empty an string 
 		///</summary>
 		[Test]
@@ -62,7 +208,7 @@ namespace nModule.UnitTests
 		[Test]
 		public void Constructor_String_ModuleNameIsStringValue()
 		{
-			AssertModuleNameAreEqual("Module");
+			AssertModuleNameAreEqual("Test Target Module");
 		}
 
 		/// <summary>
@@ -71,7 +217,7 @@ namespace nModule.UnitTests
 		[Test]
 		public void Constructor_String_ModuleIdIsGenerated()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
 			Assert.AreNotEqual(target.ModuleId, 0);
 		}
 
@@ -81,7 +227,7 @@ namespace nModule.UnitTests
 		[Test]
 		public void Constructor_String_ModuleIdIsUniquelyGenerated()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
 			Module target1 = TestUtilities.CreateStubModule("Module1");
 			Module target2 = TestUtilities.CreateStubModule("Module2");
 			Assert.AreNotEqual(target.ModuleId, target1.ModuleId);
@@ -93,46 +239,10 @@ namespace nModule.UnitTests
 		/// A Module test to ensure the base method returns Singleton for its ModuleInstantiation
 		/// </summary>
 		[Test]
-#if MSTest
-        [Ignore]
-#else
-        //[Ignore("This test doesn't work because when RhinoMocks stub or mock the object it breaks the return type/value of the virtual ModuleInstantiation")]
-#endif
-        public void Constructor_String_DefaultModuleInstantiationIsCorrect()
+		public void Constructor_String_DefaultModuleInstantiationIsCorrect()
 		{
-			Module target = TestUtilities.CreateSingletonStubModule("Module");
+			Module target = TestUtilities.CreateSingletonStubModule("Test Target Module");
 			Assert.AreEqual(ModuleInstantiation.Singleton, target.ModuleInstantiation);
-		}
-
-		/// <summary>
-		/// A Module test to test the overriding functionality of the ModuleInstantiation property to return Instantiable
-		/// </summary>
-		[Test]
-		public void ModuleInstantiation_Override_IsInstantiable()
-		{
-			Module target = TestUtilities.CreateInstantiableStubModule("Module");
-			Assert.AreEqual(ModuleInstantiation.Instantiable, target.ModuleInstantiation);
-		}
-
-		/// <summary>
-		/// A Module test to test the overriding functionality of the ModuleInstantiation property to return Singleton
-		/// </summary>
-		[Test]
-		public void ModuleInstantiation_Override_IsSingleton()
-		{
-			Module target = TestUtilities.CreateSingletonStubModule("Module");
-			Assert.AreEqual(ModuleInstantiation.Singleton, target.ModuleInstantiation);
-		}
-
-		/// <summary>
-		/// A Module test to test the overriding functionality of the ModuleInstantiation property to return Instantiable and Singleton
-		/// </summary>
-		[Test]
-		public void ModuleInstantiation_Override_InstantiableSingleton()
-		{
-			Module target = TestUtilities.CreateSingletonAndInstantiableStubModule("Module");
-			Assert.IsTrue((target.ModuleInstantiation & ModuleInstantiation.Singleton) == ModuleInstantiation.Singleton);
-			Assert.IsTrue((target.ModuleInstantiation & ModuleInstantiation.Instantiable) == ModuleInstantiation.Instantiable);
 		}
 
 		/// <summary>
@@ -141,7 +251,7 @@ namespace nModule.UnitTests
 		[Test]
 		public void Constructor_String_ModuleTypeIsSet()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
 			Assert.IsFalse(String.IsNullOrEmpty(target.ModuleType));
 		}
 
@@ -151,8 +261,8 @@ namespace nModule.UnitTests
 		[Test]
 		public void Constructor_String_IsMockModule()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
-			Assert.AreEqual("MockModule", target.ModuleType);
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			Assert.AreEqual("Mock Test Target Module", target.ModuleType);
 		}
 
 		/// <summary>
@@ -161,153 +271,168 @@ namespace nModule.UnitTests
 		[Test]
 		public void Constructor_String_ModulePriorityDefault()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
 			Assert.AreEqual(0, target.ModulePriority);
-		}
-
-		/// <summary>
-		/// A Module test to ensure that the value of a Module's ModulePriority is assignable
-		/// </summary>
-		[Test]
-		public void ModulePriority_CustomPriority_IsAssignable()
-		{
-			Module target = TestUtilities.CreateStubModule("Module");
-			Assert.AreEqual(0, target.ModulePriority);
-			target.ModulePriority = 5000;
-			Assert.AreEqual(5000, target.ModulePriority);
 		}
 
 		[Test]
 		public void Constructor_String_ModuleStatusIsNotNullOrEmpty()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
-            Assert.IsFalse(String.IsNullOrEmpty(target.ModuleStatus));
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			Assert.IsFalse(String.IsNullOrEmpty(target.ModuleStatus));
 		}
 
 		[Test]
 		public void Constructor_String_ModuleStateIsNotInitialized()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
 			Assert.AreEqual(ModuleState.NotInitialized, target.ModuleState);
-		}
-
-		[Test]
-		public void Initialize_Void_ModuleStateIsHealthy()
-		{
-			Module target = TestUtilities.CreateStubModule("Module");
-			Assert.AreEqual(ModuleState.NotInitialized, target.ModuleState);
-			target.Initialize();
-			Assert.AreEqual(ModuleState.Healthy, target.ModuleState);
-		}
-
-		[Test]
-		public void Initialize_Void_ModuleStatusIsNotNullOrEmpty()
-		{
-			Module target = TestUtilities.CreateStubModule("Module");
-			target.Initialize();
-            Assert.IsFalse(String.IsNullOrEmpty(target.ModuleStatus));
-		}
-
-		[Test]
-		public void InternalInitialize_Void_ModuleStateIsErrored()
-		{
-			Module target = TestUtilities.CreateInitializedErrorConcreteModule("Module");
-			Assert.AreEqual(ModuleState.NotInitialized, target.ModuleState);
-			target.Initialize();
-			Assert.AreEqual(ModuleState.Error, target.ModuleState);
 		}
 
 		[Test]
 		public void Constructor_Void_IsDisposedIsFalse()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
 			Assert.IsFalse(target.IsDisposed);
-		}
-
-		[Test]
-		public void Dispose_Void_IsDisposedIsTrue()
-		{
-			Module target = TestUtilities.CreateStubModule("Module");
-			target.Dispose();
-			Assert.IsTrue(target.IsDisposed);			
 		}
 
 		[Test]
 		public void Constructor_Void_IsDisposingIsFalse()
 		{
-			Module target = TestUtilities.CreateStubModule("Module");
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
 			Assert.IsFalse(target.IsDisposing);
-		}
-		
-		[Test]
-		public void Dispose_Void_OnDisposeCalled()
-		{
-			Nullable<bool> onDisposeCalled = null;
-			Module target = TestUtilities.CreateStubModule("Module");
-			target.Stub(x => x.OnDispose()).Do((System.Action)delegate { onDisposeCalled = true; });
-			target.Dispose();
-			Assert.IsTrue(onDisposeCalled.HasValue);
-			Assert.IsTrue(onDisposeCalled.Value);
 		}
 
 		[Test]
-		public void Dispose_Void_OnDisposeSetsIsDisposing()
+		public void Constructor_Void_IsPollingIsFalse()
 		{
-			bool onDisposeCalled = false;
-			Module target = TestUtilities.CreateStubModule("Module");
-			target.Stub(x => x.OnDispose()).Do((System.Action)delegate 
-			    { 
-					onDisposeCalled = true; 
-					System.Threading.Thread.Sleep(1000); 
-				}
-			);
-			System.Threading.Thread thread = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+			Module target = TestUtilities.CreateStubModule("Test Target Module");
+			Assert.IsFalse(target.IsPolling);
+		}
+
+		/// <summary>
+		/// A Module test to test the overriding functionality of the ModuleInstantiation property to return Instantiable
+		/// </summary>
+		[Test]
+		public void ModuleInstantiation_Override_IsInstantiable()
+		{
+			Module target = TestUtilities.CreateInstantiableStubModule("Test Target Module");
+			Assert.AreEqual(ModuleInstantiation.Instantiable, target.ModuleInstantiation);
+		}
+
+		/// <summary>
+		/// A Module test to test the overriding functionality of the ModuleInstantiation property to return Singleton
+		/// </summary>
+		[Test]
+		public void ModuleInstantiation_Override_IsSingleton()
+		{
+			Module target = TestUtilities.CreateSingletonStubModule("Test Target Module");
+			Assert.AreEqual(ModuleInstantiation.Singleton, target.ModuleInstantiation);
+		}
+
+		/// <summary>
+		/// A Module test to test the overriding functionality of the ModuleInstantiation property to return Instantiable and Singleton
+		/// </summary>
+		[Test]
+		public void ModuleInstantiation_Override_InstantiableSingleton()
+		{
+			Module target = TestUtilities.CreateSingletonAndInstantiableStubModule("Test Target Module");
+			Assert.IsTrue((target.ModuleInstantiation & ModuleInstantiation.Singleton) == ModuleInstantiation.Singleton);
+			Assert.IsTrue((target.ModuleInstantiation & ModuleInstantiation.Instantiable) == ModuleInstantiation.Instantiable);
+		}
+
+		[Test]
+		public void Constructor_PollTriggersModulePolled()
+		{
+			string moduleName = "Test Target Module";
+			bool modulePolledCalled = false;
+			Module target = TestUtilities.CreateConcreteNonAutoPollingModule(moduleName);
+			target.ModulePolled += new EventHandler<ModuleEventArgs>(
+				(object sender, ModuleEventArgs e) =>
 				{
-					target.Dispose();
+					Assert.IsFalse(String.IsNullOrEmpty(e.ModuleName));
+					Assert.IsTrue(e.ModuleName == moduleName);
+					Assert.IsTrue(e.ModuleThreadId == Thread.CurrentThread.ManagedThreadId);
+					modulePolledCalled = true;
 				}
 			);
-			thread.Start();
-			System.Threading.Thread.Sleep(100);
-			Assert.IsTrue(onDisposeCalled);
-			Assert.IsTrue(target.IsDisposing);
-			System.Threading.Thread.Sleep(1000);
-			Assert.IsFalse(target.IsDisposing);
-			Assert.IsTrue(target.IsDisposed);
-		}
-
-		[Test]
-		public void Poll_Void_OnPollCalled()
-		{
-			Nullable<bool> onPollCalled = null;
-			Module target = TestUtilities.CreateStubModule("Module");
-			target.Stub (x => x.OnPoll()).Do ((System.Action)delegate 
-			    { 
- 					onPollCalled = true;
-				}
-			);
-			
 			target.Poll();
-			Assert.IsTrue(onPollCalled.HasValue);
-			Assert.IsTrue(onPollCalled.Value);
-		}
-		
-		[Test]
-		public void Poll_Void_OnPollSetIsPolling()
-		{
-			Nullable<bool> onPollCalled = null;
-			Module target = TestUtilities.CreateStubModule("Module");
-			target.Stub (x => x.OnPoll()).Do ((System.Action)delegate { 
-				onPollCalled = true;
-				System.Threading.Thread.Sleep(10000);
-			});
-			System.Threading.Thread thread = new System.Threading.Thread((System.Threading.ThreadStart)delegate
-			    {
-					
-				}
-			);
-			Assert.IsTrue(onPollCalled.HasValue);
-			Assert.IsTrue(onPollCalled.Value);
+			int tries = 0;
+			while (!modulePolledCalled || tries <= 10)
+			{
+				Thread.Sleep(100); tries++;
+			}
+			Assert.IsTrue(modulePolledCalled);
 		}
 
+		[Test]
+		public void Constructor_IsAutoPollingModule_CreatesSeparatePollingThread()
+		{
+			string moduleName = "Test Target Module";
+			bool modulePolledCalled = false;
+			int modulePolledThreadId = 0;
+			Module target = TestUtilities.CreateConcreteBaseModule(moduleName);
+			target.ModulePolled += new EventHandler<ModuleEventArgs>(
+				(object sender, ModuleEventArgs e) =>
+				{
+					Assert.IsFalse(String.IsNullOrEmpty(e.ModuleName));
+					Assert.IsTrue(e.ModuleName == moduleName);
+					Assert.IsTrue(e.ModuleThreadId == Thread.CurrentThread.ManagedThreadId);
+					modulePolledThreadId = e.ModuleThreadId;
+					modulePolledCalled = true;
+				}
+			);
+			target.Initialize();
+			int tries = 0;
+			while (!modulePolledCalled && tries <= 10)
+			{
+				Thread.Sleep(100); tries++;
+			}
+			target.Dispose();
+			Assert.AreNotEqual(modulePolledThreadId, Thread.CurrentThread.ManagedThreadId);
+			Assert.IsTrue(modulePolledCalled);
+		}
+
+		[Test]
+		public void ModulePollFrequency_500Millis_PollsTimely()
+		{
+			string moduleName = "Test Target Module";
+			int modulePolledThreadId = 0;
+			int testMethodThreadId = Thread.CurrentThread.ManagedThreadId;
+			List<double> pollTimes = new List<double>();
+			Module target = TestUtilities.CreateConcreteBaseModule(moduleName);
+			target.ModuleAutoPollFrequency = 500;
+			Stopwatch pollStopWatch = new Stopwatch();
+			int tries = 0;
+			pollStopWatch.Start();
+			target.ModulePolled += new EventHandler<ModuleEventArgs>(
+				(object sender, ModuleEventArgs e) =>
+				{
+					modulePolledThreadId = Thread.CurrentThread.ManagedThreadId;
+					pollStopWatch.Stop();
+					pollTimes.Add(pollStopWatch.Elapsed.TotalMilliseconds);
+					Assert.IsFalse(String.IsNullOrEmpty(e.ModuleName));
+					Assert.IsTrue(e.ModuleName == moduleName);
+					Assert.AreNotEqual(testMethodThreadId, Thread.CurrentThread.ManagedThreadId);
+					Assert.IsTrue(e.ModuleThreadId == modulePolledThreadId);
+					tries++;
+					pollStopWatch.Reset();
+					pollStopWatch.Start();
+				}
+			);
+			target.Initialize();
+			while (tries <= 3)
+			{
+				Thread.Sleep(100);
+			}
+			target.Dispose();
+			Assert.AreNotEqual(modulePolledThreadId, testMethodThreadId);
+			foreach (double pollTime in pollTimes)
+			{
+
+				Assert.IsTrue(pollTime >= 490, "Poll frequency was outside of accepted lower bounds - {0}", pollTime);
+				Assert.IsTrue(pollTime <= 510, "Poll frequency was outside of accepted upper bounds - {0}", pollTime);
+			}
+		}
 	}
 }
