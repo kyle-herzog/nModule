@@ -9,7 +9,7 @@ namespace nModule.UnitTests
 {
 	public static class TestUtilities
 	{
-		private class ConcreteErrorInitializeModule : Module
+		private class ConcreteErrorInitializeModule : ModuleBase
 		{
 			public ConcreteErrorInitializeModule() : base() { }
 			public ConcreteErrorInitializeModule(string name) : base(name) { }
@@ -25,7 +25,7 @@ namespace nModule.UnitTests
 			}
 		}
 
-		private class ConcreteModule : Module
+		private class ConcreteModule : ModuleBase
 		{
 			public ConcreteModule() : base() { }
 			public ConcreteModule(string name) : base(name) { }
@@ -36,7 +36,7 @@ namespace nModule.UnitTests
 			}
 		}
 
-		private class ConcreteNonAutoPollingModule : Module
+		private class ConcreteNonAutoPollingModule : ModuleBase
 		{
 			public ConcreteNonAutoPollingModule() : base() { }
 			public ConcreteNonAutoPollingModule(string name) : base(name) { }
@@ -45,7 +45,7 @@ namespace nModule.UnitTests
 			public override bool IsAutoPollingModule { get { return false; } }
 		}
 
-		private class ConcreteSlowDisposingModule : Module
+		private class ConcreteSlowDisposingModule : ModuleBase
 		{
 			public ConcreteSlowDisposingModule() : base() { }
 			public ConcreteSlowDisposingModule(string name) : base(name) { }
@@ -56,14 +56,14 @@ namespace nModule.UnitTests
 			}
 		}
 
-		internal static Module CreateModule()
+		internal static ModuleBase CreateModule()
 		{
 			return CreateStubModule("");
 		}
 
-		internal static Module CreateStubModule(string name)
+		internal static ModuleBase CreateStubModule(string name)
 		{
-			Module module = Rhino.Mocks.MockRepository.GenerateStub<Module>(name);
+			ModuleBase module = Rhino.Mocks.MockRepository.GenerateStub<ModuleBase>(name);
 			module.Stub(x => x.ModuleType).Return(String.Format("Mock {0}", name));
 			return module;
 		}
@@ -73,45 +73,45 @@ namespace nModule.UnitTests
 			System.Threading.Thread.Sleep(1000);
 		}
 
-		internal static Module CreateMockModule(string name)
+		internal static ModuleBase CreateMockModule(string name)
 		{
-			Module module = Rhino.Mocks.MockRepository.GenerateMock<Module>(name);
+			ModuleBase module = Rhino.Mocks.MockRepository.GenerateMock<ModuleBase>(name);
 			module.Stub(x => x.ModuleType).Return(String.Format("Mock{0}", name));
 			return module;
 		}
 
-		internal static Module CreateSingletonStubModule(string name)
+		internal static ModuleBase CreateSingletonStubModule(string name)
 		{
-			Module module = CreateStubModule(name);
+			ModuleBase module = CreateStubModule(name);
 			module.Stub(x => x.ModuleInstantiation).Return(ModuleInstantiation.Singleton);
 			return module;
 		}
 
-		internal static Module CreateInstantiableStubModule(string name)
+		internal static ModuleBase CreateInstantiableStubModule(string name)
 		{
-			Module module = CreateStubModule(name);
+			ModuleBase module = CreateStubModule(name);
 			module.Stub(x => x.ModuleInstantiation).Return(ModuleInstantiation.Instantiable);
 			return module;
 		}
 
-		internal static Module CreateSingletonAndInstantiableStubModule(string name)
+		internal static ModuleBase CreateSingletonAndInstantiableStubModule(string name)
 		{
-			Module module = CreateStubModule(name);
+			ModuleBase module = CreateStubModule(name);
 			module.Stub(x => x.ModuleInstantiation).Return(ModuleInstantiation.Instantiable | ModuleInstantiation.Singleton);
 			return module;
 		}
 
-		internal static Module CreateInitializedErrorConcreteModule(string name)
+		internal static ModuleBase CreateInitializedErrorConcreteModule(string name)
 		{
 			return new ConcreteErrorInitializeModule(name);
 		}
 
-		internal static Module CreateConcreteBaseModule(string name)
+		internal static ModuleBase CreateConcreteBaseModule(string name)
 		{
 			return new ConcreteModule(name);
 		}
 
-		internal static Module CreateConcreteNonAutoPollingModule(string name)
+		internal static ModuleBase CreateConcreteNonAutoPollingModule(string name)
 		{
 			return new ConcreteNonAutoPollingModule(name);
 		}

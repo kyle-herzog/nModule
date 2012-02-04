@@ -46,9 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IModule.cs" />
+    <Compile Include="IManagerModule.cs" />
+    <Compile Include="ManagerModule.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="ModuleEventArgs.cs" />
     <Compile Include="ModuleInstantiation.cs" />
+    <Compile Include="ModuleManager.cs" />
     <Compile Include="ModuleState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
