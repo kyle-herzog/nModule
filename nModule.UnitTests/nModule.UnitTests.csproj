@@ -48,9 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IModuleTest.cs" />
-    <Compile Include="ModuleTest.cs" />
+    <Compile Include="ManagerModuleBaseTests.cs" />
+    <Compile Include="ManagerModuleTests.cs" />
+    <Compile Include="ModuleBaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nModule\nModule.csproj">

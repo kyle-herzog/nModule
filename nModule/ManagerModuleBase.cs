@@ -8,86 +8,38 @@ namespace nModule
     /// <summary>
     /// Generic Module Manager base implementation
     /// </summary>
-    /// <typeparam name="T">The </typeparam>
-    public abstract class ManagerModuleBase<T> : IManagerModule<T>
+    /// <typeparam name="M">The</typeparam>
+    public abstract class ManagerModuleBase<M> : ModuleBase, IManagerModule<M>
     {
-        public string ModuleName
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public int ModuleId
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public ModuleInstantiation ModuleInstantiation
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string ModuleType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public int ModulePriority
+        private string _typeName;
+        private string _moduleType;
+        /// <summary>
+        /// Gets the best module.
+        /// </summary>
+        public M BestModule
         {
             get
             {
                 throw new NotImplementedException();
             }
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
 
-        public string ModuleStatus
+        /// <summary>
+        /// When overridden will provide a value describing the module
+        /// </summary>
+        public override string ModuleType
         {
-            get { throw new NotImplementedException(); }
+            get { return _moduleType; }
         }
 
-        public ModuleState ModuleState
+        /// <summary>
+        /// Provides a base initialization of new instances of the <see cref="ManagerModuleBase&lt;M&gt;"/> class.
+        /// </summary>
+        public ManagerModuleBase()
         {
-            get { throw new NotImplementedException(); }
+            _typeName = typeof(M).Name;
+            _moduleType = String.Format("{0} Manager", _typeName);
         }
 
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Poll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsPolling
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool IsAutoPollingModule
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public int ModuleAutoPollFrequency
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
