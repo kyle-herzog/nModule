@@ -8,9 +8,10 @@ using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Generic;
 using nModule;
 using Rhino.Mocks;
-using System.Collections.Generic;
+using nModule.UnitTests.TestableClasses;
 
 namespace nModule.UnitTests
 {
@@ -40,53 +41,6 @@ namespace nModule.UnitTests
 		}
 
 		#region TestHelperMethods
-
-        private class ConcreteErrorInitializeModule : ModuleBase
-        {
-            public ConcreteErrorInitializeModule() : base() { }
-            public ConcreteErrorInitializeModule(string name) : base(name) { }
-
-            public override string ModuleType
-            {
-                get { return "Concrete Module"; }
-            }
-
-            protected internal override void OnInitialize()
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private class ConcreteModule : ModuleBase
-        {
-            public ConcreteModule() : base() { }
-            public ConcreteModule(string name) : base(name) { }
-
-            public override string ModuleType
-            {
-                get { return "Concrete Module"; }
-            }
-        }
-
-        private class ConcreteNonAutoPollingModule : ModuleBase
-        {
-            public ConcreteNonAutoPollingModule() : base() { }
-            public ConcreteNonAutoPollingModule(string name) : base(name) { }
-
-            public override string ModuleType { get { return "ConcreteNonAutoPollingModule"; } }
-            public override bool IsAutoPollingModule { get { return false; } }
-        }
-
-        private class ConcreteSlowDisposingModule : ModuleBase
-        {
-            public ConcreteSlowDisposingModule() : base() { }
-            public ConcreteSlowDisposingModule(string name) : base(name) { }
-
-            public override string ModuleType
-            {
-                get { return "Concrete Module"; }
-            }
-        }
 
         internal static ModuleBase CreateModule()
         {

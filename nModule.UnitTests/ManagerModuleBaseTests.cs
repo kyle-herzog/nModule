@@ -9,17 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using nModule.UnitTests.TestableClasses;
 
 namespace nModule.UnitTests
 {
     [TestFixture]
     public class ManagerModuleBaseTests
     {
-        private class ConcreteManagerModuleBase<IModule> : ManagerModuleBase<IModule>
-        {
-            public ConcreteManagerModuleBase() : base() { }
-        }
-
 
         ManagerModuleBase<IModule> CreateStubManagerModuleBase()
         {

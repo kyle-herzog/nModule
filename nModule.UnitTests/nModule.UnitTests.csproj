@@ -47,11 +47,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestableClasses\ConcreteManagerModuleBase.cs" />
     <Compile Include="IModuleTest.cs" />
     <Compile Include="ManagerModuleBaseTests.cs" />
     <Compile Include="ManagerModuleTests.cs" />
     <Compile Include="ModuleBaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestableClasses\ConcreteErrorInitializeModule.cs" />
+    <Compile Include="TestableClasses\ConcreteModule.cs" />
+    <Compile Include="TestableClasses\ConcreteNonAutoPollingModule.cs" />
+    <Compile Include="TestableClasses\ConcreteSlowDisposingModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nModule\nModule.csproj">

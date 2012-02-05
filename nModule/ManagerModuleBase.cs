@@ -8,15 +8,15 @@ namespace nModule
     /// <summary>
     /// Generic Module Manager base implementation
     /// </summary>
-    /// <typeparam name="M">The</typeparam>
-    public abstract class ManagerModuleBase<M> : ModuleBase, IManagerModule<M>
+    /// <typeparam name="IModule">The</typeparam>
+    public abstract class ManagerModuleBase<IModule> : ModuleBase, IManagerModule<IModule>
     {
         private string _typeName;
         private string _moduleType;
         /// <summary>
         /// Gets the best module.
         /// </summary>
-        public M BestModule
+        public IModule BestModule
         {
             get
             {
@@ -33,11 +33,11 @@ namespace nModule
         }
 
         /// <summary>
-        /// Provides a base initialization of new instances of the <see cref="ManagerModuleBase&lt;M&gt;"/> class.
+        /// Provides a base initialization of new instances of the <see cref="ManagerModuleBase&lt;IModule&gt;"/> class.
         /// </summary>
         public ManagerModuleBase()
         {
-            _typeName = typeof(M).Name;
+            _typeName = typeof(IModule).Name;
             _moduleType = String.Format("{0} Manager", _typeName);
         }
 
