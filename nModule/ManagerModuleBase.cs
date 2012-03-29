@@ -8,15 +8,15 @@ namespace nModule
     /// <summary>
     /// Generic Module Manager base implementation
     /// </summary>
-    /// <typeparam name="IModule">The</typeparam>
-    public abstract class ManagerModuleBase<IModule> : ModuleBase, IManagerModule<IModule>
+    /// <typeparam name="M">The</typeparam>
+    public abstract class ManagerModuleBase<M> : ModuleBase, IManagerModule<M> where M : IModule
     {
         private string _typeName;
         private string _moduleType;
         /// <summary>
         /// Gets the best module.
         /// </summary>
-        public IModule BestModule
+        public M BestModule
         {
             get
             {

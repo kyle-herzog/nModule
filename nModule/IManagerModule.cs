@@ -9,7 +9,7 @@ namespace nModule
     /// An interface providing all the functionality for Managing Module isntances
     /// </summary>
     /// <typeparam name="M"></typeparam>
-    public interface IManagerModule<M> : IModule
+    public interface IManagerModule<M> : IModule where M : IModule
     {
         /// <summary>
         /// Provides the best Module current instantiated.

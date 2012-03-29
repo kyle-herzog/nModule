@@ -8,8 +8,8 @@ namespace nModule
     /// <summary>
     /// A ManagerModule for all Modules.
     /// </summary>
-    /// <typeparam name="IModule">The type of the module.</typeparam>
-    public class ManagerModule<IModule> : ManagerModuleBase<IModule>
+    /// <typeparam name="M">The type of the module.</typeparam>
+    public class ManagerModule<M> : ManagerModuleBase<M> where M : IModule
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ManagerModule&lt;IModule&gt;"/> class.

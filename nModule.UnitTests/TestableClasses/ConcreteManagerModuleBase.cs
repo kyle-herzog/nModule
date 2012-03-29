@@ -6,7 +6,7 @@ using nModule;
 
 namespace nModule.UnitTests.TestableClasses
 {
-    class ConcreteManagerModuleBase<IModule> : ManagerModuleBase<IModule>
+    class ConcreteManagerModuleBase<M> : ManagerModuleBase<M> where M : IModule
     {
         public ConcreteManagerModuleBase() : base() { }
     }
