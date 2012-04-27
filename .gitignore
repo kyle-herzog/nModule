@@ -1,11 +1,14 @@
-*.suo
+packages
 bin
 obj
+
+*.suo
 *.pidb
 *.userprefs
 *.user
 *.testsettings
 *.vsmdi
+*ncrunch*
 
 TestResults*
 Kyzog.Sandbox*

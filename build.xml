@@ -1,123 +1,164 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project name="nModule" default="all-targets">
+<project name="nModule" default="open-targets">
 
-	<property environment="env" />
-	
-	<condition property="msbuild.verbosity" else="minimal">
-		<isset property="msbuild.verbosity" />
-	</condition>
-	
-	<condition property="msbuild.warninglevel" else="4">
-		<isset property="msbuild.warninglevel" />
-	</condition>
-	
-	<condition property="msbuild.targets" else="Clean;Build">
-		<isset property="msbuild.targets" />
-	</condition>
-	
-	<condition property="msbuild.configuration" else="Release">
-		<isset property="msbuild.configuration" />
-	</condition>
+  <property environment="env" />
 
-	<condition property="msbuild.TreatWarningsAsErrors" else="true">
-		<isset property="msbuild.TreatWarningsAsErrors" />
-	</condition>
+  <condition property="build.tools.nuget" else="C:\dev\tools\NuGet.exe">
+    <isset property="build.tools.nuget" />
+  </condition>
+  <condition property="msbuild.verbosity" else="minimal">
+    <isset property="msbuild.verbosity" />
+  </condition>
 
-	<condition property="build.tools.msbuild.3.5" else="C:\Windows\Microsoft.NET\Framework\v3.5\MSBuild.exe">
-		<isset property="build.tools.msbuild.3.5" />
-	</condition>
+  <condition property="msbuild.warninglevel" else="4">
+    <isset property="msbuild.warninglevel" />
+  </condition>
 
-	<condition property="build.tools.msbuild.4.0" else="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe">
-		<isset property="build.tools.msbuild.4.0" />
-	</condition>
-	
-	<condition property="build.tools.mstest" else="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\MSTest.exe">
-		<isset property="build.tools.mstest" />
-	</condition>
-	
-	<condition property="build.tools.nunit" else="C:\Program Files (x86)\NUnit 2.6\bin\nunit-console.exe">
-		<isset property="build.tools.nunit" />
-	</condition>
-	
-	<condition property="build.tools.nunit.x86" else="C:\Program Files (x86)\NUnit 2.6\bin\nunit-console-x86.exe">
-		<isset property="build.tools.nunit.x86" />
-	</condition>
+  <condition property="msbuild.targets" else="Clean;Build">
+    <isset property="msbuild.targets" />
+  </condition>
 
-	<target name="print-properties">
-		<echo message="msbuild.verbosity			: ${msbuild.verbosity}" />
-	</target>
+  <condition property="msbuild.configuration" else="Release">
+    <isset property="msbuild.configuration" />
+  </condition>
 
-	<target name="open-targets" depends="compile-nunit,execute-unittests-nunit" />
-	<target name="ms-targets" depends="compile-mstest,execute-unittests-mstest" />
-	<target name="all-targets" depends="print-properties,open-targets,ms-targets" />
-	
-	<!-- open-targets -->
-	<target name="compile-nunit">
-		<antcall target='msbuild'>
-			<param name='solution' value='nModule.sln' />
-		</antcall>
-	</target>
-	<target name="execute-unittests-nunit">
-		<exec
-		 dir='.'
-		 executable='${build.tools.nunit}'
-		 failonerror='true'>
-			<arg line='/result="nModule.UnitTests.nunit.Results.xml"' />
-			<arg line='"nModule.UnitTests\bin\Release\nModule.UnitTests.dll"' />
-		</exec>
-	</target>
+  <condition property="msbuild.TreatWarningsAsErrors" else="true">
+    <isset property="msbuild.TreatWarningsAsErrors" />
+  </condition>
 
-	<!-- nunit-targets -->
-	<target name="compile-mstest">
-		<antcall target='msbuild'>
-			<param name='solution' value='nModule.sln' />
-			<param name='target.msbuild.definedconstants' value='MSTest' />
-		</antcall>
-	</target>
-	<target name='execute-unittests-mstest'>
-		<delete file='nModule.UnitTests.mstest.Results.xml' />
-		<exec
-			executable="${build.tools.mstest}"
-			failonerror="true">
-			<arg line="/resultsfile:nModule.UnitTests.mstest.Results.xml" />
-			<arg line="/testcontainer:nModule.UnitTests\bin\Release\nModule.UnitTests.dll" />
-		</exec>	
-	</target>
+  <condition property="build.tools.msbuild.3.5" else="C:\Windows\Microsoft.NET\Framework\v3.5\MSBuild.exe">
+    <isset property="build.tools.msbuild.3.5" />
+  </condition>
 
-	<!-- Common Targets -->
-	<target name='msbuild'>
-		<condition property="target.msbuild.verbosity" else="${msbuild.verbosity}">
-			<isset property="target.msbuild.verbosity" />
-		</condition>
-		<condition property="target.msbuild.warninglevel" else="${msbuild.warninglevel}">
-			<isset property="target.msbuild.warninglevel" />
-		</condition>
-		<condition property="target.msbuild.definedconstants" else="">
-			<isset property="target.msbuild.definedconstants" />
-		</condition>
-		<condition property="target.msbuild.targets" else="${msbuild.targets}">
-			<isset property="target.msbuild.targets" />
-		</condition>
-		<condition property="target.msbuild.configuration" else="${msbuild.configuration}">
-			<isset property="target.msbuild.configuration" />
-		</condition>
-		<condition property="target.msbuild.TreatWarningsAsErrors" else="${msbuild.TreatWarningsAsErrors}">
-			<isset property="target.msbuild.TreatWarningsAsErrors" />
-		</condition>
+  <condition property="build.tools.msbuild.4.0" else="C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe">
+    <isset property="build.tools.msbuild.4.0" />
+  </condition>
 
-		<exec
-		 dir='.'
-		 executable='${build.tools.msbuild.4.0}'
-		 failonerror='true'>
-			<arg line='"${solution}"' />
-			<arg line='/p:Configuration=${target.msbuild.configuration}' />
-			<arg line='/p:WarningLevel=${target.msbuild.warninglevel}' />
-			<arg line='/p:TreatWarningsAsErrors=${target.msbuild.TreatWarningsAsErrors}' />
-			<arg line='/p:DevEnvDir="c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE"' />
-			<arg line='/p:DefineConstants="${target.msbuild.definedconstants}"' />
-			<arg line='/T:${target.msbuild.targets}' />
-			<arg line='/verbosity:${target.msbuild.verbosity}' />
-			<arg line='/nologo' />
-		</exec>
-	</target>
+  <condition property="build.tools.mstest" else="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\MSTest.exe">
+    <isset property="build.tools.mstest" />
+  </condition>
+
+  <condition property="build.tools.nunit" else="C:\Program Files (x86)\NUnit 2.6\bin\nunit-console.exe">
+    <isset property="build.tools.nunit" />
+  </condition>
+
+  <condition property="build.tools.nunit.x86" else="C:\Program Files (x86)\NUnit 2.6\bin\nunit-console-x86.exe">
+    <isset property="build.tools.nunit.x86" />
+  </condition>
+
+  <target name="print-properties">
+    <echo message="msbuild.verbosity: ${msbuild.verbosity}" />
+  </target>
+
+  <target name="teamcity-targets" depends="nuget-packages,compile-nunit,execute-unittests-nunit-teamcity" />
+  <target name="open-targets" depends="nuget-packages,compile-nunit,execute-unittests-nunit" />
+  <target name="ms-targets" depends="nuget-packages,compile-mstest,execute-unittests-mstest" />
+  <target name="all-targets" depends="nuget-packages,print-properties,open-targets,ms-targets" />
+
+  <target name='nuget-packages'>
+    <antcall target='nuget'>
+      <param name='package' value='RhinoMocks' />
+      <param name='outputDirectory' value='packages' />
+    </antcall>
+    <antcall target='nuget'>
+      <param name='package' value='nUnit' />
+      <param name='outputDirectory' value='packages' />
+    </antcall>
+  </target>
+
+  <!-- open-targets -->
+  <target name="compile-nunit">
+    <antcall target='msbuild'>
+      <param name='solution' value='src\nModule.sln' />
+    </antcall>
+  </target>
+
+  <target name="execute-unittests-nunit">
+    <exec
+      dir='.'
+      executable='${build.tools.nunit}'
+      failonerror='true'>
+      <arg line='/result="nModule.UnitTests.nunit.Results.xml"' />
+      <arg line='"src\nModule.UnitTests\bin\Release\nModule.UnitTests.dll"' />
+    </exec>
+  </target>
+
+  <target name="execute-unittests-nunit-teamcity">
+    <exec
+      dir='.'
+      executable='${teamcity.dotnet.nunitlauncher}'
+      failonerror='true'>
+      <arg line='/result="nModule.UnitTests.nunit.Results.xml"' />
+      <arg line='"src\nModule.UnitTests\bin\Release\nModule.UnitTests.dll"' />
+    </exec>
+  </target>
+
+  <!-- ms-targets -->
+  <target name="compile-mstest">
+    <antcall target='msbuild'>
+      <param name='solution' value='src\nModule.sln' />
+      <param name='target.msbuild.definedconstants' value='MSTest' />
+    </antcall>
+  </target>
+
+  <target name='execute-unittests-mstest'>
+    <delete file='nModule.UnitTests.mstest.Results.xml' />
+    <exec
+      executable="${build.tools.mstest}"
+      failonerror="true">
+      <arg line="/resultsfile:nModule.UnitTests.mstest.Results.xml" />
+      <arg line="/testcontainer:src\nModule.UnitTests\bin\Release\nModule.UnitTests.dll" />
+    </exec>
+  </target>
+
+  <!-- Common Targets -->
+  <target name='msbuild'>
+    <condition property="target.msbuild.verbosity" else="${msbuild.verbosity}">
+      <isset property="target.msbuild.verbosity" />
+    </condition>
+    <condition property="target.msbuild.warninglevel" else="${msbuild.warninglevel}">
+      <isset property="target.msbuild.warninglevel" />
+    </condition>
+    <condition property="target.msbuild.definedconstants" else="">
+      <isset property="target.msbuild.definedconstants" />
+    </condition>
+    <condition property="target.msbuild.targets" else="${msbuild.targets}">
+      <isset property="target.msbuild.targets" />
+    </condition>
+    <condition property="target.msbuild.configuration" else="${msbuild.configuration}">
+      <isset property="target.msbuild.configuration" />
+    </condition>
+    <condition property="target.msbuild.TreatWarningsAsErrors" else="${msbuild.TreatWarningsAsErrors}">
+      <isset property="target.msbuild.TreatWarningsAsErrors" />
+    </condition>
+
+    <exec
+      dir='.'
+      executable='${build.tools.msbuild.4.0}'
+      failonerror='true'>
+      <arg line='"${solution}"' />
+      <arg line='/p:Configuration=${target.msbuild.configuration}' />
+      <arg line='/p:WarningLevel=${target.msbuild.warninglevel}' />
+      <arg line='/p:TreatWarningsAsErrors=${target.msbuild.TreatWarningsAsErrors}' />
+      <arg line='/p:DevEnvDir="c:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE"' />
+      <arg line='/p:DefineConstants="${target.msbuild.definedconstants}"' />
+      <arg line='/T:${target.msbuild.targets}' />
+      <arg line='/verbosity:${target.msbuild.verbosity}' />
+      <arg line='/nologo' />
+    </exec>
+  </target>
+
+  <target name="nuget">
+    <exec
+      dir="."
+      executable='${build.tools.nuget}'
+      failonerror='true'>
+      <arg line='install' />
+      <arg line='${package}' />
+      <arg line='-OutputDirectory' />
+      <arg line='${outputDirectory}' />
+      <arg line='-ExcludeVersion' />
+    </exec>
+  </target>
+
 </project>
