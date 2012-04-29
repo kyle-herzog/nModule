@@ -50,7 +50,7 @@
     <echo message="msbuild.verbosity: ${msbuild.verbosity}" />
   </target>
 
-  <target name="teamcity-targets" depends="nuget-packages,compile-nunit,execute-unittests-nunit-teamcity" />
+  <target name="teamcity-targets" depends="-packages,compile-nunit,execute-unittests-nunit-teamcity" />
   <target name="open-targets" depends="nuget-packages,compile-nunit,execute-unittests-nunit" />
   <target name="ms-targets" depends="nuget-packages,compile-mstest,execute-unittests-mstest" />
   <target name="all-targets" depends="nuget-packages,print-properties,open-targets,ms-targets" />
@@ -88,7 +88,6 @@
       dir='.'
       executable='${teamcity.dotnet.nunitlauncher}'
       failonerror='true'>
-      <arg line='/result="nModule.UnitTests.nunit.Results.xml"' />
       <arg line='"src\nModule.UnitTests\bin\Release\nModule.UnitTests.dll"' />
     </exec>
   </target>
