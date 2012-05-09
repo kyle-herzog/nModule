@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace nModule.UnitTests
+namespace System.Diagnostics
 {
-    class ManagerModuleTests
+    class SystemDiagnosticsProcess
     {
+        
     }
 }

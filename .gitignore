@@ -2,6 +2,7 @@ packages
 bin
 obj
 
+*~
 *.suo
 *.pidb
 *.userprefs
@@ -9,6 +10,7 @@ obj
 *.testsettings
 *.vsmdi
 *ncrunch*
+*crunchsolution*
 
 TestResults*
 Kyzog.Sandbox*

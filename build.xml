@@ -3,9 +3,6 @@
 
   <property environment="env" />
 
-  <condition property="build.tools.nuget" else="C:\dev\tools\NuGet.exe">
-    <isset property="build.tools.nuget" />
-  </condition>
   <condition property="msbuild.verbosity" else="minimal">
     <isset property="msbuild.verbosity" />
   </condition>
@@ -46,12 +43,24 @@
     <isset property="build.tools.nunit.x86" />
   </condition>
 
+  <condition property="build.tools.nuget" value="nuget.exe">
+    <or>
+      <not>
+        <isset property="build.tools.nuget" />
+      </not>
+      <not>
+        <isset property="teamcity.dotnet.nuget" />
+      </not>
+    </or>
+  </condition>
+
   <target name="print-properties">
     <echo message="msbuild.verbosity: ${msbuild.verbosity}" />
+    <echo message="build.tools.nuget: ${build.tools.nuget}" />
   </target>
 
   <target name="teamcity-targets" depends="nuget-packages,compile-nunit" />
-  <target name="open-targets" depends="nuget-packages,compile-nunit,execute-unittests-nunit" />
+  <target name="open-targets" depends="print-properties,nuget-packages,compile-nunit,execute-unittests-nunit" />
   <target name="ms-targets" depends="nuget-packages,compile-mstest,execute-unittests-mstest" />
   <target name="all-targets" depends="nuget-packages,print-properties,open-targets,ms-targets" />
 
@@ -62,6 +71,10 @@
     </antcall>
     <antcall target='nuget'>
       <param name='package' value='nUnit' />
+      <param name='outputDirectory' value='packages' />
+    </antcall>
+    <antcall target='nuget'>
+      <param name='package' value='xUnit' />
       <param name='outputDirectory' value='packages' />
     </antcall>
   </target>
@@ -160,4 +173,20 @@
     </exec>
   </target>
 
+  <target name='t-'>
+    <antcall target='targets' />
+  </target>
+
+  <target name='targets'>
+    <echo message='The following are primary targets for the configured build system' />
+    <echo message='open-targets - executes the build targets that utilize the non-proprietary tools' />
+  </target>
+
+  <target name='p-'>
+    <antcall target='properties' />
+  </target>
+
+  <target name='properties'>
+    <echo message='The following are properties that can be given to the ant call to provide customization' />
+  </target>
 </project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using nModule.Utilities;
 
 namespace nModule
 {
@@ -28,7 +29,7 @@ namespace nModule
 			}
 			return nextId;
 		}
-		
+
 		#endregion Static Members
 
 		#region Events
@@ -42,13 +43,18 @@ namespace nModule
 
 		#region Fields
 
-		private Thread _pollingThread;
 		private string _moduleName;
 		private int _moduleId;
 
 		#endregion
 
 		#region Properties
+
+        /// <summary>
+        /// The Module's self created background thread that will automatically
+        /// and update the Module's status and state periodically
+        /// </summary>
+		protected internal Thread ModulePollingThread { get; private set; }
 
 		/// <summary>
 		/// The name for this module.
@@ -63,7 +69,7 @@ namespace nModule
 		/// <summary>
 		/// When overridden will provide a value describing the module
 		/// </summary>
-		public abstract string ModuleType { get; }
+        public virtual string ModuleType { get { return this.GetType().Name; } }
 
 		/// <summary>
 		/// Returns the ModuleInstantiation for this module stating how it may be instantiated via the ModuleManager. May be overridden.
@@ -141,7 +147,7 @@ namespace nModule
 			ModulePriority = 0;
             _moduleName = name;
 			_moduleId = GenerateModuleId();
-			InternalModuleStatus = "Instantiated";
+			InternalModuleStatus = ModuleStatusConstants.Instantiated;
 			InternalModuleState = ModuleState.NotInitialized;
 			ModuleAutoPollFrequency = 1000;
 		}
@@ -156,36 +162,28 @@ namespace nModule
 		public void Initialize()
 		{
 			InternalModuleState = ModuleState.Initializing;
-			InternalModuleStatus = "The Module is now initializing.";
+			InternalModuleStatus = ModuleStatusConstants.Initializing;
 			try
 			{
-				OnInitialize();
+				InternalInitialize();
                 if (IsAutoPollingModule)
                 {
-                    _pollingThread = new Thread(() =>
-                        {
-                            while (!IsDisposed && !IsDisposing)
-                            {
-                                Thread.Sleep(ModuleAutoPollFrequency);
-                                Poll();
-                            }
-                        }
-                    );
-                    _pollingThread.Start();
+                    ModulePollingThread = ThreadUtils.CreateThread(PollingThreadStart);
                 }
 				InternalModuleState = ModuleState.Healthy;
+                InternalModuleStatus = ModuleStatusConstants.Initialized;
 			}
 			catch (Exception ex)
 			{
 				InternalModuleState = ModuleState.Error;
-				InternalModuleStatus = String.Format("An error occurred when initializing the module {0}: {1}", ModuleName, ex.Message);
+				InternalModuleStatus = String.Format("{0}\r\n{1}", ModuleStatusConstants.InitializeError, ex.Message);
 			}
 		}
 
 		/// <summary>
 		/// When overridden in a derived class, initializes the module to a working state. 
 		/// </summary>
-        protected internal virtual void OnInitialize() { }
+        protected internal virtual void InternalInitialize() { }
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -195,13 +193,13 @@ namespace nModule
 			IsDisposing = true;
 			try
 			{
-                OnDispose();
 				InternalDispose();
 				IsDisposed = true;
+                InternalModuleState = ModuleState.Disposed;
 			}
 			catch
 			{
-				InternalModuleStatus = "An error occured when disposing the module";
+				InternalModuleStatus = ModuleStatusConstants.DisposeError;
 			}
 			finally
 			{
@@ -209,14 +207,19 @@ namespace nModule
 			}
 		}
 
-        internal void OnDispose()
-        {
-        }
-
         /// <summary>
         /// When overridden in a subclass this will provide functionality to dispose resources created by the sub-instantiated module.
         /// </summary>
         protected internal virtual void InternalDispose() { }
+
+        private void PollingThreadStart()
+        {
+            while (!IsDisposing && !IsDisposed)
+            {
+                Thread.Sleep(ModuleAutoPollFrequency);
+                Poll();
+            }
+        }
 
 		/// <summary>
 		/// 

@@ -1,1 +1,1 @@
-ant -propertyfile .\build.properties all-targets
+ant -propertyfile .\build.properties open-targets
