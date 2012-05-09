@@ -45,9 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\Object.cs" />
     <Compile Include="ProcessDataCapturer.cs" />
-    <Compile Include="Extensions\SystemAction.cs" />
     <Compile Include="Extensions\SystemDiagnosticsProcess.cs" />
     <Compile Include="Extensions\SystemRandom.cs" />
     <Compile Include="Extensions\SystemThreadingThread.cs" />
