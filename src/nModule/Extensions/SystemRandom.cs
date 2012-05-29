@@ -30,11 +30,10 @@ namespace System
         /// <returns>the randomly generated string</returns>
         public static string NextString(this Random random, int size, bool lowerCase)
         {
-            StringBuilder builder = new StringBuilder();
-            char ch;
+            var builder = new StringBuilder();
             for (int i = 0; i < size; i++)
             {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                var ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
                 builder.Append(ch);
             }
             if (lowerCase)

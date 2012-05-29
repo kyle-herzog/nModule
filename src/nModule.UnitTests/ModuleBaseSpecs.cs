@@ -151,70 +151,70 @@ namespace nModule.UnitTests
 
         public class when_initializing_a_module_base_class_with_on_initialize_overridden : Specification
         {
-            static int wait = 100;
-            static int testBeginWait = wait / 10;
-            static int testEndWait = wait * 2;
+            const int Wait = 100;
+            const int TestBeginWait = Wait/10;
+            const int TestEndWait = Wait*2;
 
             class ConcreateModule : ModuleBase
             {
                 protected internal override void InternalInitialize()
                 {
-                    Thread.Sleep(wait);
+                    Thread.Sleep(Wait);
                 }
             }
 
-            ModuleBase testedClass;
+            ModuleBase _testedClass;
 
             protected override void Establish_That()
             {
-                testedClass = new ConcreateModule();
+                _testedClass = new ConcreateModule();
             }
 
             protected override void Because_Of()
             {
-                ThreadUtils.CreateThread(testedClass.Initialize);
+                ThreadUtils.CreateThread(_testedClass.Initialize);
             }
 
             [Fact]
             public void should_set_module_state_to_initializing()
             {
-                Thread.Sleep(testBeginWait);
-                Assert.Equal<ModuleState>(ModuleState.Initializing, testedClass.ModuleState);
+                Thread.Sleep(TestBeginWait);
+                Assert.Equal<ModuleState>(ModuleState.Initializing, _testedClass.ModuleState);
             }
 
             [Fact]
             public void should_set_module_status_to_initializing()
             {
-                Thread.Sleep(testBeginWait);
-                Assert.Equal<string>(ModuleStatusConstants.Initializing, testedClass.ModuleStatus);
+                Thread.Sleep(TestBeginWait);
+                Assert.Equal<string>(ModuleStatusConstants.Initializing, _testedClass.ModuleStatus);
             }
 
             [Fact]
             public void should_eventually_set_state_to_healthy()
             {
-                Thread.Sleep(testEndWait);
-                Assert.Equal<ModuleState>(ModuleState.Healthy, testedClass.ModuleState);
+                Thread.Sleep(TestEndWait);
+                Assert.Equal<ModuleState>(ModuleState.Healthy, _testedClass.ModuleState);
             }
 
             [Fact]
             public void should_set_the_status_to_healthy()
             {
-                Thread.Sleep(testEndWait);
-                Assert.Equal<string>(ModuleStatusConstants.Initialized, testedClass.ModuleStatus);
+                Thread.Sleep(TestEndWait);
+                Assert.Equal<string>(ModuleStatusConstants.Initialized, _testedClass.ModuleStatus);
             }
         }
 
         public class when_initializing_a_module_base_class_with_on_initialize_overridden_and_exception_is_thrown : Specification
         {
-            static int wait = 100;
-            static int testBeginWait = wait / 10;
-            static int testEndWait = wait * 2;
+            const int Wait = 100;
+            const int TestBeginWait = Wait/10;
+            const int TestEndWait = Wait*2;
 
             class ConcreateModule : ModuleBase
             {
                 protected internal override void InternalInitialize()
                 {
-                    Thread.Sleep(wait);
+                    Thread.Sleep(Wait);
                     throw new SystemException();
                 }
             }
@@ -234,21 +234,21 @@ namespace nModule.UnitTests
             [Fact]
             public void should_set_module_state_to_initializing()
             {
-                Thread.Sleep(testBeginWait);
+                Thread.Sleep(TestBeginWait);
                 Assert.Equal<ModuleState>(ModuleState.Initializing, testedClass.ModuleState);
             }
 
             [Fact]
             public void should_eventually_set_state_to_health()
             {
-                Thread.Sleep(testEndWait);
+                Thread.Sleep(TestEndWait);
                 Assert.Equal<ModuleState>(ModuleState.Error, testedClass.ModuleState);
             }
 
             [Fact]
             public void should_set_status_to_initialize_error()
             {
-                Thread.Sleep(testEndWait);
+                Thread.Sleep(TestEndWait);
                 Assert.True(testedClass.ModuleStatus.StartsWith(ModuleStatusConstants.InitializeError));
             }
         }

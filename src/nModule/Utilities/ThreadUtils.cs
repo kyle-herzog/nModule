@@ -20,10 +20,12 @@ namespace nModule.Utilities
 
         public static Thread CreateThread(ThreadStart ts, string name, bool isBackground, bool startThread, ThreadPriority threadPriority)
         {
-            Thread retVal = new Thread(ts);
-            retVal.IsBackground = isBackground;
-            retVal.Name = name;
-            retVal.Priority = threadPriority;
+            var retVal = new Thread(ts)
+            {
+                IsBackground = isBackground, 
+                Name = name, 
+                Priority = threadPriority
+            };
             if (startThread)
                 retVal.Start();
             return retVal;
@@ -36,10 +38,12 @@ namespace nModule.Utilities
 
         public static Thread CreateThread(ParameterizedThreadStart pts, string name, object threadParameter, bool isBackground, bool startThread, ThreadPriority threadPriority)
         {
-            Thread retVal = new Thread(pts);
-            retVal.IsBackground = isBackground;
-            retVal.Name = name;
-            retVal.Priority = threadPriority;
+            var retVal = new Thread(pts)
+            {
+                IsBackground = isBackground, 
+                Name = name, 
+                Priority = threadPriority
+            };
             if (startThread)
                 retVal.Start(threadParameter);
             return retVal;
