@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 
 namespace nModule.Utilities
 {
-    class ProcessUtils
+    /// <summary>
+    /// Utility methods for .NET's Process objects
+    /// </summary>
+    public class ProcessUtils
     {
         /// <summary>
         /// Not Completely Implemented
@@ -16,7 +15,7 @@ namespace nModule.Utilities
         /// <returns></returns>
         public static Process LaunchExternalProcess(string processPath, string processArguments)
         {
-            return LaunchExternalProcess(processPath, processArguments, false, null);
+            return LaunchExternalProcess(processPath, processArguments, false, false, null);
         }
 
         /// <summary>
@@ -24,10 +23,11 @@ namespace nModule.Utilities
         /// </summary>
         /// <param name="processPath"></param>
         /// <param name="processArguments"></param>
+        /// <param name="startProcess"></param>
         /// <param name="waitForExit"></param>
         /// <param name="processDataCapturer"></param>
         /// <returns></returns>
-        public static Process LaunchExternalProcess(string processPath, string processArguments, bool waitForExit, ProcessDataCapturer processDataCapturer)
+        public static Process LaunchExternalProcess(string processPath, string processArguments, bool startProcess, bool waitForExit, ProcessDataCapturer processDataCapturer)
         {
             Process externalProcess = new Process();
             ProcessStartInfo externalProcessStartInfo = new ProcessStartInfo();
@@ -43,7 +43,10 @@ namespace nModule.Utilities
             {
                 processDataCapturer.Process = externalProcess;
             }
-            externalProcess.Start();
+            if (startProcess)
+            {
+                externalProcess.Start();
+            }
             if (processDataCapturer != null)
             {
                 //processDataCapturer.ProcessName = externalProcess.ProcessName;
