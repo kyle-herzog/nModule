@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
@@ -12,7 +10,7 @@ namespace nModule
     public abstract class ProcessDataCapturer
     {
         private Process _process;
-        private StringBuilder _processData = new StringBuilder();
+        private readonly StringBuilder _processData = new StringBuilder();
 
         /// <summary>
         /// The currently attached Process
@@ -50,7 +48,7 @@ namespace nModule
         /// <summary>
         /// Instanciates a ProcessDataCapturer
         /// </summary>
-        public ProcessDataCapturer()
+        protected ProcessDataCapturer()
         {
             WriteSingleEntry = false;
         }
@@ -58,13 +56,13 @@ namespace nModule
         /// Instanciates a ProcessDataCapturer with with the supplied Process
         /// </summary>
         /// <param name="process">The Process to which this ProcessDataCapturer shall attach and listen</param>
-        public ProcessDataCapturer(Process process) : this() { Process = process; }
+        protected ProcessDataCapturer(Process process) : this() { Process = process; }
         /// <summary>
         /// Instanciates a ProcessDataCapturer with with the supplied Process
         /// </summary>
         /// <param name="process">The Process to which this ProcessDataCapturer shall attach and listen</param>
         /// <param name="writeSingleEntry">Value to predefine how captured data is written</param>
-        public ProcessDataCapturer(Process process, bool writeSingleEntry)
+        protected ProcessDataCapturer(Process process, bool writeSingleEntry)
             : this()
         {
             Process = process;

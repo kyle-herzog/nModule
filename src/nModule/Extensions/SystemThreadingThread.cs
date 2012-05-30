@@ -26,15 +26,21 @@
         /// <returns>Whether or not the current Thread is counted as running.</returns>
         public static bool IsThreadRunning(this Thread thread)
         {
-            switch (thread.ThreadState)
+            var threadState = ThreadState.Unstarted;
+            try
             {
-                case System.Threading.ThreadState.AbortRequested:
-                case System.Threading.ThreadState.Background:
-                case System.Threading.ThreadState.Running:
-                case System.Threading.ThreadState.StopRequested:
-                case System.Threading.ThreadState.SuspendRequested:
-                case System.Threading.ThreadState.WaitSleepJoin:
-                case System.Threading.ThreadState.Suspended:
+                threadState = thread.ThreadState;
+            }
+            catch (ThreadAbortException) { }
+            switch (threadState)
+            {
+                case ThreadState.AbortRequested:
+                case ThreadState.Background:
+                case ThreadState.Running:
+                case ThreadState.StopRequested:
+                case ThreadState.SuspendRequested:
+                case ThreadState.WaitSleepJoin:
+                case ThreadState.Suspended:
                     return true;
             }
             return false;

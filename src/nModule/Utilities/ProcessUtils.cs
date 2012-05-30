@@ -27,17 +27,19 @@ namespace nModule.Utilities
         /// <param name="waitForExit"></param>
         /// <param name="processDataCapturer"></param>
         /// <returns></returns>
-        public static Process LaunchExternalProcess(string processPath, string processArguments, bool startProcess, bool waitForExit, ProcessDataCapturer processDataCapturer)
+        public static Process LaunchExternalProcess(string processPath, string processArguments, bool startProcess, bool waitForExit, IProcessDataCapturer processDataCapturer)
         {
-            Process externalProcess = new Process();
-            ProcessStartInfo externalProcessStartInfo = new ProcessStartInfo();
-            externalProcessStartInfo.Arguments = processArguments;
-            externalProcessStartInfo.FileName = processPath;
-            externalProcessStartInfo.RedirectStandardInput = true;
-            externalProcessStartInfo.RedirectStandardError = true;
-            externalProcessStartInfo.RedirectStandardOutput = true;
-            externalProcessStartInfo.CreateNoWindow = true;
-            externalProcessStartInfo.UseShellExecute = false;
+            var externalProcess = new Process();
+            var externalProcessStartInfo = new ProcessStartInfo
+            {
+                Arguments = processArguments,
+                FileName = processPath,
+                RedirectStandardInput = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
             externalProcess.StartInfo = externalProcessStartInfo;
             if (processDataCapturer != null)
             {
@@ -47,7 +49,7 @@ namespace nModule.Utilities
             {
                 externalProcess.Start();
             }
-            if (processDataCapturer != null)
+            if (processDataCapturer != null && startProcess)
             {
                 //processDataCapturer.ProcessName = externalProcess.ProcessName;
                 externalProcess.BeginOutputReadLine();

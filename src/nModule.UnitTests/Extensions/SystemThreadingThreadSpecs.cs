@@ -15,7 +15,7 @@ namespace nModule.UnitTests.Extensions
                 Thread = new Thread(() =>
                 {
                     while (true)
-                        Thread.Sleep(0);
+                        Thread.Sleep(10);
                 });
             }
 
@@ -48,7 +48,7 @@ namespace nModule.UnitTests.Extensions
             public void should_return_not_running()
             {
                 Thread.AbortSafely();
-                Assert.Equal<bool>(false, Thread.IsThreadRunning());
+                Assert.False(Thread.IsThreadRunning());
             }
         }
     }
