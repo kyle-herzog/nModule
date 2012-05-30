@@ -28,5 +28,26 @@ namespace nModule.UnitTests.Utilities
                 Assert.Throws<InvalidOperationException>(() => { var startTime = _process.StartTime; } );
             }
         }
+
+        public class when_creating_a_process_ : Specification
+        {
+            Process _process;
+            const int RandomLength = 10;
+
+            protected override void Establish_That()
+            {
+            }
+
+            protected override void Because_Of()
+            {
+                _process = ProcessUtils.LaunchExternalProcess(Random.NextString(RandomLength), null);
+            }
+
+            [Fact]
+            public void should_return_a_process_unstarted()
+            {
+                Assert.Throws<InvalidOperationException>(() => { var startTime = _process.StartTime; } );
+            }
+        }
     }
 }
