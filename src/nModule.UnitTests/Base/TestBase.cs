@@ -7,6 +7,7 @@ namespace nModule.UnitTests.Base
     {
         protected MockRepository Mocker { get; private set; }
         protected Random Random { get; private set; }
+        protected const int RandomStringSize = 10;
 
         public TestBase()
         {

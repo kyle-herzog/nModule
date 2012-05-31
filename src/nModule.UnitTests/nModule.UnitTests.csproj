@@ -69,6 +69,7 @@
     <Compile Include="Base\TestBase.cs" />
     <Compile Include="Base\TestBaseOfT.cs" />
     <Compile Include="Utilities\ProcessUtilsSpecs.cs" />
+    <Compile Include="Utilities\TheadUtilsSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nModule\nModule.csproj">

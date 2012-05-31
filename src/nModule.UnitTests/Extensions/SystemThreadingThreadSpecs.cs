@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Xunit;
 using nModule.UnitTests.Base;
+using System;
 
 namespace nModule.UnitTests.Extensions
 {
@@ -14,8 +15,12 @@ namespace nModule.UnitTests.Extensions
             {
                 Thread = new Thread(() =>
                 {
-                    while (true)
-                        Thread.Sleep(10);
+                    try
+                    {
+                        while (true)
+                            Thread.Sleep(10);
+                    }
+                    catch (ThreadAbortException) { }
                 });
             }
 
@@ -40,15 +45,19 @@ namespace nModule.UnitTests.Extensions
             [Fact]
             public void should_return_running()
             {
-                Assert.Equal<bool>(true, Thread.IsThreadRunning());
+                Assert.Equal<bool>(true, Thread.IsAlive);
                 Thread.AbortSafely();
             }
 
+        }
+
+        public class when_safely_aborting_a_thread : when_using_a_thread
+        {
             [Fact]
             public void should_return_not_running()
             {
                 Thread.AbortSafely();
-                Assert.False(Thread.IsThreadRunning());
+                Assert.Equal(false, Thread.IsAlive);
             }
         }
     }

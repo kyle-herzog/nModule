@@ -34,5 +34,10 @@ namespace nModule
         /// String stating the Module errored upon disposing
         /// </summary>
         public const string DisposeError = "An error occured when disposing the module";
+
+        /// <summary>
+        /// String stating the Module is in an errored state
+        /// </summary>
+        public const string Error = "An error occured when polling the module.";
     }
 }

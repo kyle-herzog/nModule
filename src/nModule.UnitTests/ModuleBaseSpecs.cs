@@ -390,5 +390,72 @@ namespace nModule.UnitTests
                 Assert.Equal<string>(ModuleStatusConstants.DisposeError, testedClass.ModuleStatus);
             }
         }
+
+        public class when_polling_a_module : Specification
+        {
+            class ConcreteModule : ModuleBase
+            {
+                public bool InternalPollCalled { get; set; }
+                public override bool IsAutoPollingModule { get { return false; } }
+                protected internal override void InternalPoll()
+                {
+                    InternalPollCalled = true;
+                }
+            }
+
+            ModuleBase testedClass;
+
+            protected override void Establish_That() 
+            {
+                testedClass = new ConcreteModule();
+            }
+
+            protected override void Because_Of()
+            {
+                testedClass.Poll();
+            }
+
+            [Fact]
+            public void should_call_internal_poll()
+            {
+                Assert.True((testedClass as ConcreteModule).InternalPollCalled);
+            }
+        }
+
+        public class when_polling_a_module_and_exceptions_are_thrown : Specification
+        {
+            class ConcreteModule : ModuleBase
+            {
+                public override bool IsAutoPollingModule { get { return false; } }
+                protected internal override void InternalPoll()
+                {
+                    throw new ApplicationException();
+                }
+            }
+
+            ModuleBase testedClass;
+
+            protected override void Establish_That() 
+            {
+                testedClass = new ConcreteModule();
+            }
+
+            protected override void Because_Of()
+            {
+                testedClass.Poll();
+            }
+
+            [Fact]
+            public void should_set_module_state_to_error()
+            {
+                Assert.Equal<ModuleState>(ModuleState.Error, testedClass.ModuleState);
+            }
+
+            [Fact]
+            public void should_set_the_module_status_to_Error()
+            {
+                Assert.Equal(ModuleStatusConstants.Error, testedClass.ModuleStatus);
+            }
+        }
     }
 }

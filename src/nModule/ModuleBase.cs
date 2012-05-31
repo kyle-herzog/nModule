@@ -234,7 +234,7 @@ namespace nModule
 			}
 			catch
 			{
-				InternalModuleStatus = "An error occured when polling the module.";
+				InternalModuleStatus = ModuleStatusConstants.Error;
 				InternalModuleState = ModuleState.Error;
 			}
 			finally

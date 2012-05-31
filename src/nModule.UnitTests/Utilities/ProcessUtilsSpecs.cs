@@ -50,8 +50,8 @@ namespace nModule.UnitTests.Utilities
             [Fact]
             public void should_return_a_process_unstarted()
             {
-                Assert.NotEqual(_beforeLaunchExternalProcess, _process.StartTime);
-                Assert.NotEqual(_afterLaunchExternalProcess, _process.StartTime);
+                Assert.True(_beforeLaunchExternalProcess <= _process.StartTime);
+                Assert.True(_afterLaunchExternalProcess > _process.StartTime);
                 Assert.DoesNotThrow(_process.Kill);
             }
         }
