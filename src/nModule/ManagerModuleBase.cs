@@ -8,7 +8,7 @@ namespace nModule
     /// <summary>
     /// Generic Module Manager base implementation
     /// </summary>
-    /// <typeparam name="M">The</typeparam>
+    /// <typeparam name="M">The type of Module to be managed</typeparam>
     public abstract class ManagerModuleBase<M> : ModuleBase, IManagerModule<M> where M : IModule
     {
         private string _typeName;

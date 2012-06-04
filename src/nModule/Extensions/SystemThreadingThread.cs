@@ -16,7 +16,8 @@ namespace System.Threading
         {
             try
             {
-                thread.Abort();
+                if (thread.ThreadState != ThreadState.Unstarted && thread.IsAlive)
+                    thread.Abort();
             }
             catch (ThreadAbortException) { }
         }

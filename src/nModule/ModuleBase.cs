@@ -216,8 +216,8 @@ namespace nModule
         {
             while (!IsDisposing && !IsDisposed)
             {
-                Thread.Sleep(ModuleAutoPollFrequency);
                 Poll();
+                Thread.Sleep(ModuleAutoPollFrequency);
             }
         }
 

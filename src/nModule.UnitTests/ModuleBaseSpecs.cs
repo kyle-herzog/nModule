@@ -98,6 +98,38 @@ namespace nModule.UnitTests
             }
         }
 
+        public class when_calling_Internal_initialize : Specification<ModuleBase>
+        {
+            protected override void Establish_That()
+            {
+                TestedClass.Expect(tc => tc.InternalInitialize()).CallOriginalMethod(OriginalCallOptions.NoExpectation);
+            }
+
+            protected override void Because_Of() { }
+
+            [Fact]
+            public void should_not_throw_exceptions()
+            {
+                Assert.DoesNotThrow(TestedClass.InternalInitialize);
+            }
+        }
+
+        public class when_calling_Internal_Dispose : Specification<ModuleBase>
+        {
+            protected override void Establish_That()
+            {
+                TestedClass.Expect(tc => tc.InternalDispose()).CallOriginalMethod(OriginalCallOptions.NoExpectation);
+            }
+
+            protected override void Because_Of() { }
+
+            [Fact]
+            public void should_not_throw_exceptions()
+            {
+                Assert.DoesNotThrow(TestedClass.InternalDispose);
+            }
+        }
+
         public class when_creating_a_module_base_with_a_name : Specification
         {
             ModuleBase testedClass;
@@ -503,14 +535,28 @@ namespace nModule.UnitTests
 
         public class when_a_module_is_auto_polling : Specification<ModuleBase>
         {
+            int modulePolledCount = 0;
             protected override void Establish_That()
             {
-
+                TestedClass.Expect(tc => tc.IsAutoPollingModule).CallOriginalMethod(OriginalCallOptions.NoExpectation);
+                TestedClass.ModulePolled +=new EventHandler<ModuleEventArgs>(TestedClass_ModulePolled);
             }
 
             protected override void Because_Of()
             {
-                throw new NotImplementedException();
+                TestedClass.Initialize();
+            }
+
+            void TestedClass_ModulePolled(object sender, ModuleEventArgs e)
+            {
+                modulePolledCount++;
+            }
+
+            [Fact]
+            public void should_poll_at_least_once()
+            {
+                Thread.Sleep(2000);
+                Assert.True(modulePolledCount > 0);
             }
         }
     }
