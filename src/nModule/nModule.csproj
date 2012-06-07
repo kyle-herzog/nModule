@@ -45,13 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProcessDataCapturer.cs" />
+    <Compile Include="ProcessDataCapturerBase.cs" />
     <Compile Include="Extensions\SystemDiagnosticsProcess.cs" />
     <Compile Include="Extensions\SystemRandom.cs" />
     <Compile Include="Extensions\SystemThreadingThread.cs" />
     <Compile Include="IModule.cs" />
     <Compile Include="IManagerModule.cs" />
-    <Compile Include="ManagerModule.cs" />
     <Compile Include="ModuleBase.cs" />
     <Compile Include="ModuleEventArgs.cs" />
     <Compile Include="ModuleInstantiation.cs" />

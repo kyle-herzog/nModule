@@ -20,7 +20,7 @@ namespace nModule
         {
             get
             {
-                throw new NotImplementedException();
+                return default(M);
             }
         }
 
@@ -37,7 +37,7 @@ namespace nModule
         /// </summary>
         public ManagerModuleBase()
         {
-            _typeName = typeof(IModule).Name;
+            _typeName = typeof(M).Name;
             _moduleType = String.Format("{0} Manager", _typeName);
         }
 

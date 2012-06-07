@@ -64,7 +64,9 @@
     <Compile Include="Base\Specification.cs" />
     <Compile Include="Base\SpecificationOfT.cs" />
     <Compile Include="Extensions\SystemThreadingThreadSpecs.cs" />
+    <Compile Include="ManagerModuleBaseSpecs.cs" />
     <Compile Include="ModuleBaseSpecs.cs" />
+    <Compile Include="ProcessDataCapturerBaseSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\TestBase.cs" />
     <Compile Include="Base\TestBaseOfT.cs" />

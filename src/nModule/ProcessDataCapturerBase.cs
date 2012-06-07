@@ -7,7 +7,7 @@ namespace nModule
     /// <summary>
     /// An base object for captuing the output stream of an externally running process.
     /// </summary>
-    public abstract class ProcessDataCapturer
+    public abstract class ProcessDataCapturerBase : IProcessDataCapturer
     {
         private Process _process;
         private readonly StringBuilder _processData = new StringBuilder();
@@ -48,7 +48,7 @@ namespace nModule
         /// <summary>
         /// Instanciates a ProcessDataCapturer
         /// </summary>
-        protected ProcessDataCapturer()
+        protected ProcessDataCapturerBase()
         {
             WriteSingleEntry = false;
         }
@@ -56,13 +56,13 @@ namespace nModule
         /// Instanciates a ProcessDataCapturer with with the supplied Process
         /// </summary>
         /// <param name="process">The Process to which this ProcessDataCapturer shall attach and listen</param>
-        protected ProcessDataCapturer(Process process) : this() { Process = process; }
+        protected ProcessDataCapturerBase(Process process) : this() { Process = process; }
         /// <summary>
         /// Instanciates a ProcessDataCapturer with with the supplied Process
         /// </summary>
         /// <param name="process">The Process to which this ProcessDataCapturer shall attach and listen</param>
         /// <param name="writeSingleEntry">Value to predefine how captured data is written</param>
-        protected ProcessDataCapturer(Process process, bool writeSingleEntry)
+        protected ProcessDataCapturerBase(Process process, bool writeSingleEntry)
             : this()
         {
             Process = process;
@@ -76,7 +76,8 @@ namespace nModule
         /// <param name="e">The Data from the Event triggered by said process.</param>
         protected void CaptureDelegateMethod(object sender, DataReceivedEventArgs e)
         {
-            if (!WriteSingleEntry)
+            LastOutput = e.Data;
+            if (WriteSingleEntry)
                 _processData.AppendLine(e.Data);
             else
             {
@@ -92,7 +93,7 @@ namespace nModule
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Exited(object sender, EventArgs e)
         {
-            if (!WriteSingleEntry)
+            if (WriteSingleEntry)
                 Write(_processData.ToString());
             _process.OutputDataReceived -= CaptureDelegateMethod;
             _process.ErrorDataReceived -= CaptureDelegateMethod;
@@ -104,12 +105,12 @@ namespace nModule
             _process.CancelErrorRead();
             _process.OutputDataReceived -= CaptureDelegateMethod;
             _process.ErrorDataReceived -= CaptureDelegateMethod;
-            _process.Exited -= new EventHandler(Exited);
+            _process.Exited -= Exited;
         }
 
         private void WireProcess()
         {
-            _process.Exited += new EventHandler(Exited);
+            _process.Exited += Exited;
             _process.OutputDataReceived += CaptureDelegateMethod;
             _process.ErrorDataReceived += CaptureDelegateMethod;
         }
@@ -118,6 +119,11 @@ namespace nModule
         /// Writes the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
-        protected abstract void Write(string value);
+        protected internal abstract void Write(string value);
+
+        /// <summary>
+        /// The string value for the last output from the Process captured
+        /// </summary>
+        public string LastOutput { get; private set; }
     }
 }

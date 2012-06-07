@@ -51,7 +51,6 @@ namespace nModule.Utilities
             }
             if (processDataCapturer != null && startProcess)
             {
-                //processDataCapturer.ProcessName = externalProcess.ProcessName;
                 externalProcess.BeginOutputReadLine();
                 externalProcess.BeginErrorReadLine();
             }
