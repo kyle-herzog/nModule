@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationInfoSpecs.cs" />
     <Compile Include="Base\Specification.cs" />
     <Compile Include="Base\SpecificationOfT.cs" />
     <Compile Include="Extensions\SystemThreadingThreadSpecs.cs" />
@@ -70,8 +71,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\TestBase.cs" />
     <Compile Include="Base\TestBaseOfT.cs" />
-    <Compile Include="Utilities\ProcessUtilsSpecs.cs" />
-    <Compile Include="Utilities\TheadUtilsSpecs.cs" />
+    <Compile Include="Utilities\IOUtilitySpecs.cs" />
+    <Compile Include="Utilities\ProcessUtilitySpecs.cs" />
+    <Compile Include="Utilities\ReflectionUtilitySpecs.cs" />
+    <Compile Include="Utilities\TheadUtilitySpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nModule\nModule.csproj">

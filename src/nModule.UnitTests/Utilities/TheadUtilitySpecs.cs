@@ -9,7 +9,7 @@ using Xunit;
 
 namespace nModule.UnitTests.Utilities
 {
-    public class TheadUtilsSpecs
+    public class TheadUtilitySpecs
     {
         public abstract class and_using_Thread_Utils : Specification
         {
@@ -49,7 +49,7 @@ namespace nModule.UnitTests.Utilities
 
             protected override void Because_Of()
             {
-                Thread = ThreadUtils.CreateThread(TestThreadStart, _threadName);
+                Thread = ThreadUtility.CreateThread(TestThreadStart, _threadName);
             }
 
             [Fact]
@@ -92,7 +92,7 @@ namespace nModule.UnitTests.Utilities
 
             protected override void Because_Of()
             {
-                Thread = ThreadUtils.CreateThread(TestParameterizedThreadStart, _threadName, false);
+                Thread = ThreadUtility.CreateThread(TestParameterizedThreadStart, _threadName, false);
             }
 
             [Fact]

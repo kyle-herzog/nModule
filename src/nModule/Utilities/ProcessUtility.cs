@@ -5,7 +5,7 @@ namespace nModule.Utilities
     /// <summary>
     /// Utility methods for .NET's Process objects
     /// </summary>
-    public class ProcessUtils
+    public class ProcessUtility
     {
         /// <summary>
         /// Not Completely Implemented

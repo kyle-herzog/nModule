@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace nModule.Utilities
 {
-    class ThreadUtils
+    class ThreadUtility
     {
         public static Thread CreateThread(ThreadStart ts)
         {

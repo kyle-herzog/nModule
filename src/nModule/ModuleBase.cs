@@ -168,7 +168,7 @@ namespace nModule
 				InternalInitialize();
                 if (IsAutoPollingModule)
                 {
-                    ModulePollingThread = ThreadUtils.CreateThread(PollingThreadStart);
+                    ModulePollingThread = ThreadUtility.CreateThread(PollingThreadStart);
                 }
 				InternalModuleState = ModuleState.Healthy;
                 InternalModuleStatus = ModuleStatusConstants.Initialized;

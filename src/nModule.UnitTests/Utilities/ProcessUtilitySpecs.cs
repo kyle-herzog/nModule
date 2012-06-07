@@ -7,7 +7,7 @@ using nModule.UnitTests.Base;
 
 namespace nModule.UnitTests.Utilities
 {
-    public class ProcessUtilsSpecs
+    public class ProcessUtilitySpecs
     {
         const string TestProcess = "cmd";
 
@@ -22,7 +22,7 @@ namespace nModule.UnitTests.Utilities
 
             protected override void Because_Of()
             {
-                _process = ProcessUtils.LaunchExternalProcess(Random.NextString(RandomLength), null);
+                _process = ProcessUtility.LaunchExternalProcess(Random.NextString(RandomLength), null);
             }
 
             [Fact]
@@ -43,7 +43,7 @@ namespace nModule.UnitTests.Utilities
             protected override void Because_Of()
             {
                 _beforeLaunchExternalProcess = DateTime.Now;
-                _process = ProcessUtils.LaunchExternalProcess(TestProcess, null, true, false, null);
+                _process = ProcessUtility.LaunchExternalProcess(TestProcess, null, true, false, null);
                 _afterLaunchExternalProcess = DateTime.Now;
             }
 
@@ -70,7 +70,7 @@ namespace nModule.UnitTests.Utilities
 
             protected override void Because_Of()
             {
-                _process = ProcessUtils.LaunchExternalProcess(TestProcess, "", true, false, _processDataCapturer);
+                _process = ProcessUtility.LaunchExternalProcess(TestProcess, "", true, false, _processDataCapturer);
             }
 
             [Fact]
@@ -95,7 +95,7 @@ namespace nModule.UnitTests.Utilities
 
             protected override void Because_Of()
             {
-                _process = ProcessUtils.LaunchExternalProcess(TestProcess, "/C echo 'Hello World!'", true, true, null);
+                _process = ProcessUtility.LaunchExternalProcess(TestProcess, "/C echo 'Hello World!'", true, true, null);
             }
 
             [Fact]

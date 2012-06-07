@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationInfo.cs" />
     <Compile Include="ProcessDataCapturerBase.cs" />
     <Compile Include="Extensions\SystemDiagnosticsProcess.cs" />
     <Compile Include="Extensions\SystemRandom.cs" />
@@ -59,8 +60,10 @@
     <Compile Include="ModuleStatusConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IProcessDataCapturer.cs" />
-    <Compile Include="Utilities\ProcessUtils.cs" />
-    <Compile Include="Utilities\ThreadUtils.cs" />
+    <Compile Include="Utilities\IOUtility.cs" />
+    <Compile Include="Utilities\ProcessUtility.cs" />
+    <Compile Include="Utilities\ReflectionUtility.cs" />
+    <Compile Include="Utilities\ThreadUtility.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

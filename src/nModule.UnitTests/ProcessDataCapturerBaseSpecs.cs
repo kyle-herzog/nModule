@@ -38,7 +38,7 @@ namespace nModule.UnitTests
                 TestedClass
                     .Stub(tc => tc.Write(Arg<string>.Is.Anything))
                     .CallOriginalMethod(OriginalCallOptions.NoExpectation);
-                _process = ProcessUtils.LaunchExternalProcess("ping.exe", "www.google.com");
+                _process = ProcessUtility.LaunchExternalProcess("ping.exe", "www.google.com");
                 _process.OutputDataReceived +=new DataReceivedEventHandler(OutputDataReceived);
             }
 

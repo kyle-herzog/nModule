@@ -205,7 +205,7 @@ namespace nModule.UnitTests
 
             protected override void Because_Of()
             {
-                _thread = ThreadUtils.CreateThread(_testedClass.Initialize);
+                _thread = ThreadUtility.CreateThread(_testedClass.Initialize);
             }
 
             [Fact]
@@ -261,7 +261,7 @@ namespace nModule.UnitTests
 
             protected override void Because_Of()
             {
-                _thread = ThreadUtils.CreateThread(new ThreadStart(testedClass.Initialize), "");
+                _thread = ThreadUtility.CreateThread(new ThreadStart(testedClass.Initialize), "");
             }
 
             [Fact]
@@ -361,7 +361,7 @@ namespace nModule.UnitTests
 
             protected override void Because_Of()
             {
-                _thread = ThreadUtils.CreateThread(testedClass.Dispose);
+                _thread = ThreadUtility.CreateThread(testedClass.Dispose);
             }
 
             [Fact]
@@ -515,7 +515,7 @@ namespace nModule.UnitTests
 
             protected override void Because_Of()
             {
-                _thread = ThreadUtils.CreateThread(testedClass.Poll, "Poll Thread");
+                _thread = ThreadUtility.CreateThread(testedClass.Poll, "Poll Thread");
             }
 
             [Fact]
