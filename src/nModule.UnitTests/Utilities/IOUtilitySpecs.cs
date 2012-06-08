@@ -138,7 +138,7 @@ namespace nModule.UnitTests.Utilities
             private bool _result;
             protected override void Establish_That()
             {
-                _specialFolder = Random.NextEnum<Environment.SpecialFolder>();
+                _specialFolder = Environment.SpecialFolder.ApplicationData;
                 _path = Random.NextString();
                 _combinedPath = IOUtility.CombinePath(_specialFolder, _path);
             }
