@@ -11,6 +11,11 @@ namespace nModule
     public static class ApplicationInfo
     {
         /// <summary>
+        /// The type used to discover whether the application is running within the Mono framework.
+        /// </summary>
+        public const string MonoRuntimeType = "Mono.Runtime";
+
+        /// <summary>
         /// The Directory from which the application is executing.
         /// </summary>
         public static string Directory { get; set; }
@@ -45,11 +50,11 @@ namespace nModule
 
         static ApplicationInfo()
         {
-            Applicaition = Assembly.GetEntryAssembly();
+            Applicaition = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
             ApplicationData = IOUtility.CombinePath(Environment.SpecialFolder.ApplicationData, Name);
             CommonApplicationData = IOUtility.CombinePath(Environment.SpecialFolder.CommonApplicationData, Name);
             Directory = AppDomain.CurrentDomain.BaseDirectory;
-            RunningInMono = Type.GetType("Mono.Runtime") != null;
+            RunningInMono = Type.GetType(MonoRuntimeType) != null;
         }
     }
 }

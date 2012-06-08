@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using nModule.Utilities;
 using nModule.UnitTests.Base;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using Rhino.Mocks.MethodRecorders;
 using Xunit;
 
 namespace nModule.UnitTests
@@ -557,6 +553,19 @@ namespace nModule.UnitTests
             {
                 Thread.Sleep(2000);
                 Assert.True(modulePolledCount > 0);
+            }
+
+            [Fact]
+            public void should_stop_auto_polling_when_disposing_or_disposed()
+            {
+                Thread.Sleep(1000);
+                var _beforeDispose = modulePolledCount;
+                TestedClass.Dispose();
+                var _afterDispose = modulePolledCount;
+                Thread.Sleep(2000);
+
+                Assert.True(_beforeDispose <= modulePolledCount);
+                Assert.True(_afterDispose >= modulePolledCount);
             }
         }
     }

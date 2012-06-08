@@ -12,8 +12,8 @@ namespace nModule
 	{
 		#region Static Members
 
-		private static Random ModuleIdGenerator = new Random();
-		private static List<int> ModuleIds = new List<int>();
+		private static readonly Random ModuleIdGenerator = new Random();
+		private static readonly List<int> ModuleIds = new List<int>();
 
 		private static int GenerateModuleId()
 		{

@@ -64,6 +64,7 @@
     <Compile Include="ApplicationInfoSpecs.cs" />
     <Compile Include="Base\Specification.cs" />
     <Compile Include="Base\SpecificationOfT.cs" />
+    <Compile Include="Extensions\SystemRandomSpecs.cs" />
     <Compile Include="Extensions\SystemThreadingThreadSpecs.cs" />
     <Compile Include="ManagerModuleBaseSpecs.cs" />
     <Compile Include="ModuleBaseSpecs.cs" />

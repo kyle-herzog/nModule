@@ -20,7 +20,7 @@ namespace nModule.Utilities
         public static string CombinePath(string path1, string path2, bool escapePrependingDirectorySeparator = true)
         {
             if (escapePrependingDirectorySeparator && path2.StartsWith(Path.DirectorySeparatorChar.ToString()))
-                path2 = path2.Substring(1, path2.Length - 2);
+                path2 = path2.Substring(1, path2.Length - 1);
             return Path.Combine(path1, path2);
         }
 
@@ -32,12 +32,7 @@ namespace nModule.Utilities
         /// <returns>The safely combined path</returns>
         public static string CombinePath(IEnumerable<string> paths, bool escapePrependingDirectorySeparator = true)
         {
-            string combinedPath = "";
-            foreach (var path in paths)
-            {
-                combinedPath = CombinePath(combinedPath, path, escapePrependingDirectorySeparator);
-            }
-            return combinedPath;
+            return paths.Aggregate("", (current, path) => CombinePath(current, path, escapePrependingDirectorySeparator));
         }
 
         /// <summary>
