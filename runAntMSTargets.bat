@@ -1,1 +1,0 @@
-ant -propertyfile .\build.properties ms-targets
