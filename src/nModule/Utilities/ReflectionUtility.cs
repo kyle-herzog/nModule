@@ -59,7 +59,7 @@ namespace nModule.Utilities
         /// </summary>
         /// <param name="assignableType"></param>
         /// <returns></returns>
-        public static Type[] LoadAssignableType<T>(T assignableType)
+        public static Type[] LoadAssignableType(Type assignableType)
         {
             var types = new List<Type>();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
