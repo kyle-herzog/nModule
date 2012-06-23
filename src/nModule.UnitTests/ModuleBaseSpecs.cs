@@ -54,7 +54,7 @@ namespace nModule.UnitTests
             [Fact]
             public void should_set_module_state_to_not_initialized()
             {
-                Assert.Equal<ModuleState>(ModuleState.NotInitialized, TestedClass.ModuleState); 
+                Assert.Equal<ModuleState>(ModuleState.NotInitialized, TestedClass.ModuleState);
             }
 
             [Fact]
@@ -129,7 +129,7 @@ namespace nModule.UnitTests
         public class when_creating_a_module_base_with_a_name : Specification
         {
             ModuleBase testedClass;
-            string moduleName; 
+            string moduleName;
 
             protected override void Establish_That()
             {
@@ -148,7 +148,7 @@ namespace nModule.UnitTests
 
         public class when_initializing_a_module_base_class : Specification<ModuleBase>
         {
-            protected override void Establish_That() 
+            protected override void Establish_That()
             {
                 TestedClass.Stub(x => x.IsAutoPollingModule).CallOriginalMethod(OriginalCallOptions.NoExpectation);
             }
@@ -161,27 +161,36 @@ namespace nModule.UnitTests
             [Fact]
             public void should_set_the_module_state_to_healthy()
             {
-                Assert.Equal<ModuleState>(ModuleState.Healthy, TestedClass.ModuleState);
+                using (TestedClass)
+                {
+                    Assert.Equal<ModuleState>(ModuleState.Healthy, TestedClass.ModuleState);
+                }
             }
 
             [Fact]
             public void should_set_module_status_to_initialized()
             {
-                Assert.Equal<string>(ModuleStatusConstants.Initialized, TestedClass.ModuleStatus);
+                using (TestedClass)
+                {
+                    Assert.Equal<string>(ModuleStatusConstants.Initialized, TestedClass.ModuleStatus);
+                }
             }
 
             [Fact]
             public void should_instanciate_Module_Polling_Thread()
             {
-                Assert.NotNull(TestedClass.ModulePollingThread);
+                using (TestedClass)
+                {
+                    Assert.NotNull(TestedClass.ModulePollingThread);
+                }
             }
         }
 
         public class when_initializing_a_module_base_class_with_on_initialize_overridden : Specification
         {
             const int Wait = 100;
-            const int TestBeginWait = Wait/10;
-            const int TestEndWait = Wait*2;
+            const int TestBeginWait = Wait / 10;
+            const int TestEndWait = Wait * 2;
 
             class ConcreateModule : ModuleBase
             {
@@ -207,36 +216,48 @@ namespace nModule.UnitTests
             [Fact]
             public void should_set_module_state_to_initializing()
             {
-                Thread.Sleep(TestBeginWait);
-                Assert.Equal<ModuleState>(ModuleState.Initializing, _testedClass.ModuleState);
+                using (_testedClass)
+                {
+                    Thread.Sleep(TestBeginWait);
+                    Assert.Equal<ModuleState>(ModuleState.Initializing, _testedClass.ModuleState);
+                }
             }
 
             [Fact]
             public void should_set_module_status_to_initializing()
             {
-                Thread.Sleep(TestBeginWait);
-                Assert.Equal<string>(ModuleStatusConstants.Initializing, _testedClass.ModuleStatus);
+                using (_testedClass)
+                {
+                    Thread.Sleep(TestBeginWait);
+                    Assert.Equal<string>(ModuleStatusConstants.Initializing, _testedClass.ModuleStatus);
+                }
             }
 
             [Fact]
             public void should_eventually_set_state_to_healthy()
             {
-                _thread.Join();
-                Assert.Equal<ModuleState>(ModuleState.Healthy, _testedClass.ModuleState);
+                using (_testedClass)
+                {
+                    _thread.Join();
+                    Assert.Equal<ModuleState>(ModuleState.Healthy, _testedClass.ModuleState);
+                }
             }
 
             [Fact]
             public void should_set_the_status_to_healthy()
             {
-                _thread.Join();
-                Assert.Equal<string>(ModuleStatusConstants.Initialized, _testedClass.ModuleStatus);
+                using (_testedClass)
+                {
+                    _thread.Join();
+                    Assert.Equal<string>(ModuleStatusConstants.Initialized, _testedClass.ModuleStatus);
+                }
             }
         }
 
         public class when_initializing_a_module_base_class_with_on_initialize_overridden_and_exception_is_thrown : Specification
         {
             const int Wait = 100;
-            const int TestBeginWait = Wait/10;
+            const int TestBeginWait = Wait / 10;
 
             class ConcreateModule : ModuleBase
             {
@@ -247,38 +268,47 @@ namespace nModule.UnitTests
                 }
             }
 
-            ModuleBase testedClass;
+            ModuleBase _testedClass;
             private Thread _thread;
 
             protected override void Establish_That()
             {
-                testedClass = new ConcreateModule();
+                _testedClass = new ConcreateModule();
             }
 
             protected override void Because_Of()
             {
-                _thread = ThreadUtility.CreateThread(new ThreadStart(testedClass.Initialize), "");
+                _thread = ThreadUtility.CreateThread(new ThreadStart(_testedClass.Initialize), "");
             }
 
             [Fact]
             public void should_set_module_state_to_initializing()
             {
-                Thread.Sleep(TestBeginWait);
-                Assert.Equal<ModuleState>(ModuleState.Initializing, testedClass.ModuleState);
+                using (_testedClass)
+                {
+                    Thread.Sleep(TestBeginWait);
+                    Assert.Equal<ModuleState>(ModuleState.Initializing, _testedClass.ModuleState);
+                }
             }
 
             [Fact]
             public void should_eventually_set_state_to_health()
             {
-                _thread.Join();
-                Assert.Equal<ModuleState>(ModuleState.Error, testedClass.ModuleState);
+                using (_testedClass)
+                {
+                    _thread.Join();
+                    Assert.Equal<ModuleState>(ModuleState.Error, _testedClass.ModuleState);
+                }
             }
 
             [Fact]
             public void should_set_status_to_initialize_error()
             {
-                _thread.Join();
-                Assert.True(testedClass.ModuleStatus.StartsWith(ModuleStatusConstants.InitializeError));
+                using (_testedClass)
+                {
+                    _thread.Join();
+                    Assert.True(_testedClass.ModuleStatus.StartsWith(ModuleStatusConstants.InitializeError));
+                }
             }
         }
 
@@ -293,22 +323,25 @@ namespace nModule.UnitTests
                 }
             }
 
-            ConcreteModule testedClass;
+            ConcreteModule _testedClass;
 
             protected override void Establish_That()
             {
-                testedClass = new ConcreteModule();
+                _testedClass = new ConcreteModule();
             }
 
             protected override void Because_Of()
             {
-                testedClass.Initialize();
+                _testedClass.Initialize();
             }
 
             [Fact]
             public void should_call_on_initialize()
             {
-                Assert.True(testedClass.OnInitializeCalled);
+                using (_testedClass)
+                {
+                    Assert.True(_testedClass.OnInitializeCalled);
+                }
             }
         }
 
@@ -337,7 +370,7 @@ namespace nModule.UnitTests
         public class when_disposing_of_a_module_in_a_separate_thread : Specification
         {
             const int Wait = 100;
-            const int TestBeginWait = Wait/10;
+            const int TestBeginWait = Wait / 10;
 
             class ConcreteModule : ModuleBase
             {
@@ -347,45 +380,45 @@ namespace nModule.UnitTests
                 }
             }
 
-            ModuleBase testedClass;
+            ModuleBase _testedClass;
             private Thread _thread;
 
             protected override void Establish_That()
             {
-                testedClass = new ConcreteModule();
+                _testedClass = new ConcreteModule();
             }
 
             protected override void Because_Of()
             {
-                _thread = ThreadUtility.CreateThread(testedClass.Dispose);
+                _thread = ThreadUtility.CreateThread(_testedClass.Dispose);
             }
 
             [Fact]
             public void should_set_is_disposing_to_true()
             {
                 Thread.Sleep(TestBeginWait);
-                Assert.Equal<bool>(true, testedClass.IsDisposing);
+                Assert.Equal<bool>(true, _testedClass.IsDisposing);
             }
 
             [Fact]
             public void should_set_is_disposing_to_false()
             {
                 _thread.Join();
-                Assert.Equal<bool>(false, testedClass.IsDisposing);
+                Assert.Equal<bool>(false, _testedClass.IsDisposing);
             }
 
             [Fact]
             public void should_set_is_disposed_to_true()
             {
                 _thread.Join();
-                Assert.Equal<bool>(true, testedClass.IsDisposed);
+                Assert.Equal<bool>(true, _testedClass.IsDisposed);
             }
 
             [Fact]
             public void should_set_module_state_to_disposed()
             {
                 _thread.Join();
-                Assert.Equal<ModuleState>(ModuleState.Disposed, testedClass.ModuleState);
+                Assert.Equal<ModuleState>(ModuleState.Disposed, _testedClass.ModuleState);
             }
         }
 
@@ -403,7 +436,7 @@ namespace nModule.UnitTests
 
             ModuleBase testedClass;
 
-            protected override void Establish_That() 
+            protected override void Establish_That()
             {
                 testedClass = new ConcreteModule();
             }
@@ -434,7 +467,7 @@ namespace nModule.UnitTests
 
             ModuleBase testedClass;
 
-            protected override void Establish_That() 
+            protected override void Establish_That()
             {
                 testedClass = new ConcreteModule();
             }
@@ -464,7 +497,7 @@ namespace nModule.UnitTests
 
             ModuleBase testedClass;
 
-            protected override void Establish_That() 
+            protected override void Establish_That()
             {
                 testedClass = new ConcreteModule();
             }
@@ -490,7 +523,7 @@ namespace nModule.UnitTests
         public class when_polling_a_module_in_separate_threads : Specification
         {
             const int Wait = 100;
-            const int TestBeginWait = Wait/10;
+            const int TestBeginWait = Wait / 10;
 
             class ConcreteModule : ModuleBase
             {
@@ -504,7 +537,7 @@ namespace nModule.UnitTests
             ModuleBase testedClass;
             private Thread _thread;
 
-            protected override void Establish_That() 
+            protected override void Establish_That()
             {
                 testedClass = new ConcreteModule();
             }
@@ -535,7 +568,7 @@ namespace nModule.UnitTests
             protected override void Establish_That()
             {
                 TestedClass.Expect(tc => tc.IsAutoPollingModule).CallOriginalMethod(OriginalCallOptions.NoExpectation);
-                TestedClass.ModulePolled +=new EventHandler<ModuleEventArgs>(TestedClass_ModulePolled);
+                TestedClass.ModulePolled += new EventHandler<ModuleEventArgs>(TestedClass_ModulePolled);
             }
 
             protected override void Because_Of()
@@ -551,21 +584,27 @@ namespace nModule.UnitTests
             [Fact]
             public void should_poll_at_least_once()
             {
-                Thread.Sleep(2000);
-                Assert.True(modulePolledCount > 0);
+                using (TestedClass)
+                {
+                    Thread.Sleep(2000);
+                    Assert.True(modulePolledCount > 0);
+                }
             }
 
             [Fact]
             public void should_stop_auto_polling_when_disposing_or_disposed()
             {
-                Thread.Sleep(1000);
-                var _beforeDispose = modulePolledCount;
-                TestedClass.Dispose();
-                var _afterDispose = modulePolledCount;
-                Thread.Sleep(2000);
+                using (TestedClass)
+                {
+                    Thread.Sleep(1000);
+                    var _beforeDispose = modulePolledCount;
+                    TestedClass.Dispose();
+                    var _afterDispose = modulePolledCount;
+                    Thread.Sleep(2000);
 
-                Assert.True(_beforeDispose <= modulePolledCount);
-                Assert.True(_afterDispose >= modulePolledCount);
+                    Assert.True(_beforeDispose <= modulePolledCount);
+                    Assert.True(_afterDispose >= modulePolledCount);
+                }
             }
         }
     }

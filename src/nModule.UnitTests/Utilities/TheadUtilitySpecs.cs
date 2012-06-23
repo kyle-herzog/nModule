@@ -27,7 +27,7 @@ namespace nModule.UnitTests.Utilities
                     Thread.Sleep(10);
                 }
             }
-            
+
             protected void TestParameterizedThreadStart(object obj)
             {
                 TestParameterizedThreadStartCalled = true;
@@ -61,7 +61,7 @@ namespace nModule.UnitTests.Utilities
 
             [Fact]
             public void should_start_the_thread()
-            {   
+            {
                 Assert.True(Thread.IsAlive);
                 KeepThreadRunning = false;
             }

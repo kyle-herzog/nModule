@@ -5,9 +5,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{E955CC
 	ProjectSection(SolutionItems) = preProject
 		..\build.properties = ..\build.properties
 		..\build.xml = ..\build.xml
+		..\packages.config = ..\packages.config
+		..\rakefile = ..\rakefile
 		..\runAnt.bat = ..\runAnt.bat
-		..\runAntMSTargets.bat = ..\runAntMSTargets.bat
-		..\runAntNUnit.bat = ..\runAntNUnit.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nModule", "nModule\nModule.csproj", "{AACD4DBC-701E-4D74-B9F6-FA301BAAAA5C}"

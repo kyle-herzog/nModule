@@ -31,18 +31,6 @@
     <isset property="build.tools.msbuild.4.0" />
   </condition>
 
-  <condition property="build.tools.mstest" else="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\MSTest.exe">
-    <isset property="build.tools.mstest" />
-  </condition>
-
-  <condition property="build.tools.nunit" else="C:\Program Files (x86)\NUnit 2.6\bin\nunit-console.exe">
-    <isset property="build.tools.nunit" />
-  </condition>
-
-  <condition property="build.tools.nunit.x86" else="C:\Program Files (x86)\NUnit 2.6\bin\nunit-console-x86.exe">
-    <isset property="build.tools.nunit.x86" />
-  </condition>
-
   <condition property="build.tools.nuget" value="nuget.exe">
     <or>
       <not>
@@ -54,15 +42,16 @@
     </or>
   </condition>
 
+  <condition property="build.tools.xunit" else="xunit.console.clr4.exe">
+    <isset property="build.tools.xunit" />
+  </condition>
+
   <target name="print-properties">
     <echo message="msbuild.verbosity: ${msbuild.verbosity}" />
     <echo message="build.tools.nuget: ${build.tools.nuget}" />
   </target>
 
-  <target name="teamcity-targets" depends="nuget-packages,compile-nunit" />
-  <target name="open-targets" depends="print-properties,nuget-packages,compile-nunit,execute-unittests-nunit" />
-  <target name="ms-targets" depends="nuget-packages,compile-mstest,execute-unittests-mstest" />
-  <target name="all-targets" depends="nuget-packages,print-properties,open-targets,ms-targets" />
+  <target name="open-targets" depends="print-properties,nuget-packages,compile,execute-unittests" />
 
   <target name='nuget-packages'>
     <antcall target='nuget'>
@@ -70,56 +59,28 @@
       <param name='outputDirectory' value='packages' />
     </antcall>
     <antcall target='nuget'>
-      <param name='package' value='nUnit' />
+      <param name='package' value='xUnit' />
       <param name='outputDirectory' value='packages' />
     </antcall>
     <antcall target='nuget'>
-      <param name='package' value='xUnit' />
+      <param name='package' value='FluentAssertions' />
       <param name='outputDirectory' value='packages' />
     </antcall>
   </target>
 
   <!-- open-targets -->
-  <target name="compile-nunit">
+  <target name="compile">
     <antcall target='msbuild'>
       <param name='solution' value='src\nModule.sln' />
     </antcall>
   </target>
 
-  <target name="execute-unittests-nunit">
+  <target name="execute-unittests">
     <exec
       dir='.'
-      executable='${build.tools.nunit}'
-      failonerror='true'>
-      <arg line='/result="nModule.UnitTests.nunit.Results.xml"' />
-      <arg line='"src\nModule.UnitTests\bin\Release\nModule.UnitTests.dll"' />
-    </exec>
-  </target>
-
-  <target name="execute-unittests-nunit-teamcity">
-    <exec
-      dir='.'
-      executable='${teamcity.dotnet.nunitlauncher}'
+      executable='${build.tools.xunit}'
       failonerror='true'>
       <arg line='"src\nModule.UnitTests\bin\Release\nModule.UnitTests.dll"' />
-    </exec>
-  </target>
-
-  <!-- ms-targets -->
-  <target name="compile-mstest">
-    <antcall target='msbuild'>
-      <param name='solution' value='src\nModule.sln' />
-      <param name='target.msbuild.definedconstants' value='MSTest' />
-    </antcall>
-  </target>
-
-  <target name='execute-unittests-mstest'>
-    <delete file='nModule.UnitTests.mstest.Results.xml' />
-    <exec
-      executable="${build.tools.mstest}"
-      failonerror="true">
-      <arg line="/resultsfile:nModule.UnitTests.mstest.Results.xml" />
-      <arg line="/testcontainer:src\nModule.UnitTests\bin\Release\nModule.UnitTests.dll" />
     </exec>
   </target>
 
@@ -171,19 +132,6 @@
       <arg line='${outputDirectory}' />
       <arg line='-ExcludeVersion' />
     </exec>
-  </target>
-
-  <target name='t-'>
-    <antcall target='targets' />
-  </target>
-
-  <target name='targets'>
-    <echo message='The following are primary targets for the configured build system' />
-    <echo message='open-targets - executes the build targets that utilize the non-proprietary tools' />
-  </target>
-
-  <target name='p-'>
-    <antcall target='properties' />
   </target>
 
   <target name='properties'>

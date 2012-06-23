@@ -39,7 +39,7 @@ namespace nModule.UnitTests
                     .Stub(tc => tc.Write(Arg<string>.Is.Anything))
                     .CallOriginalMethod(OriginalCallOptions.NoExpectation);
                 _process = ProcessUtility.LaunchExternalProcess("ping.exe", "www.google.com");
-                _process.OutputDataReceived +=new DataReceivedEventHandler(OutputDataReceived);
+                _process.OutputDataReceived += new DataReceivedEventHandler(OutputDataReceived);
             }
 
             protected override void Because_Of()

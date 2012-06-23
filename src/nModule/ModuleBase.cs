@@ -193,6 +193,10 @@ namespace nModule
 			IsDisposing = true;
 			try
 			{
+                if (ModulePollingThread != null)
+                {
+                    ModulePollingThread.AbortSafely();
+                }
 				InternalDispose();
 				IsDisposed = true;
                 InternalModuleState = ModuleState.Disposed;

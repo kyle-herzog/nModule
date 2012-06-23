@@ -70,7 +70,7 @@ namespace nModule.UnitTests.Utilities
         public class when_utilizing_IO_utilities_to_combine_multiple_paths : Specification
         {
             const int pathLength = 10;
-            IEnumerable<string> _paths; 
+            IEnumerable<string> _paths;
             private string _combinedPath;
 
             protected override void Establish_That()

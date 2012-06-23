@@ -28,7 +28,7 @@ namespace nModule.UnitTests.Utilities
             [Fact]
             public void should_return_a_process_unstarted()
             {
-                Assert.Throws<InvalidOperationException>(() => { var startTime = _process.StartTime; } );
+                Assert.Throws<InvalidOperationException>(() => { var startTime = _process.StartTime; });
             }
         }
 
@@ -77,6 +77,7 @@ namespace nModule.UnitTests.Utilities
             public void should_set_iProcess_data_capturer()
             {
                 Assert.NotNull(_processDataCapturer.Process);
+                _process.Kill();
             }
 
             [Fact]
@@ -84,6 +85,7 @@ namespace nModule.UnitTests.Utilities
             {
                 Assert.Equal(_process, _processDataCapturer.Process);
                 Assert.Equal(_process.Id, _processDataCapturer.Process.Id);
+                _process.Kill();
             }
         }
 

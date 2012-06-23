@@ -1,0 +1,29 @@
+require "albacore"
+
+NUGET_PATH = ENV['NUGET_PATH'] || "C:\\nuget.exe"
+
+puts "nuget_path " + NUGET_PATH
+
+task :default => [:installNugetPackages,:build,:test] # run build, then test
+ 
+desc "Build primary solution"
+msbuild :build do |msb|         # create a msbuild task named build
+    msb.properties :configuration => :Debug
+    msb.targets :Clean, :Build
+    msb.solution = "VendingMachine.sln"
+end
+ 
+desc "Run unit tests"
+xunit :test do |xunit|        # create a mstest task named test
+    mstest.command = "xunit.console.clr4.exe"
+    mstest.assemblies "src/nModule.UnitTests/bin/Debug/nModule.UnitTests.dll"
+end
+
+desc "Install missing NuGet packages."
+exec :installNuGetPackages do |cmd|
+  FileList["packages.config"].each { |filepath|
+    cmd.command = NUGET_PATH
+    cmd.parameters = "install #{filepath} -OutputDirectory packages -ExcludeVersion"
+  }
+end
+

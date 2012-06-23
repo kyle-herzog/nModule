@@ -38,27 +38,19 @@ namespace nModule.Utilities
         /// <summary>
         /// Returns all assemblies found with the given criteria.
         /// </summary>
-        /// <param name="includeFileSystem">Whether or not the search should go to finding files within the file system where the application resides or just retrieve assemblies already loaded within the AppDomain.</param>
         /// <param name="searchOption">Whether or not the search for assemblies should include all directories or just the top most directory.</param>
-        /// <param name="includedPaths">Directories that should be included within the search for assemblies.</param>
+        /// <param name="paths">Directories that should be included within the search for assemblies. Defaults to the application's directory.</param>
         /// <returns>A collection of Assemblies mapped to thier paths</returns>
-        public static IDictionary<string, Assembly> GetAssemblies(bool includeFileSystem = false, SearchOption searchOption = SearchOption.TopDirectoryOnly, params string[] includedPaths)
+        public static IDictionary<string, Assembly> LoadAssemblies(SearchOption searchOption = SearchOption.TopDirectoryOnly, params string[] paths)
         {
             var assemblies = new Dictionary<string, Assembly>();
-            var searchPaths = new List<string>();
-            if(includeFileSystem)
-                searchPaths.Add(ApplicationInfo.Directory);
-            if(includedPaths != null)
-                searchPaths.AddRange(includedPaths);
-            searchPaths.ForEach(path =>
+            if(paths == null || paths.Length == 0)
+                paths = new[] { ApplicationInfo.Directory };
+            paths.ToList().ForEach(path =>
             {
                 var files = Directory.GetFiles(path, AssemplyExtension, searchOption);
                 files.ToList().ForEach(file => assemblies.Add(file, Assembly.LoadFrom(file)));
             });
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                assemblies[assembly.Location] = assembly;
-            }
             return assemblies;
         }
 
@@ -67,21 +59,20 @@ namespace nModule.Utilities
         /// </summary>
         /// <param name="assignableType"></param>
         /// <returns></returns>
-        public static Type[] LoadAssignableType(Type assignableType)
+        public static Type[] LoadAssignableType<T>(T assignableType)
         {
             var types = new List<Type>();
-            foreach (var kvp in GetAssemblies())
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 try
                 {
-                    var assembly = kvp.Value;
                     var assemblyTypes = assembly.GetTypes();
                     types.AddRange(assemblyTypes.Where(type => !type.IsAbstract && assignableType.IsAssignableFrom(type)));
                 }
                 catch (Exception ex)
                 {
-                    var myException = new Exception("Error loading assignable types", ex);
-                    myException.Data.Add("Assembly Name", kvp.Value.FullName);
+                    var myException = new Exception("Error loading assignable types from " + assembly.FullName, ex);
+                    myException.Data.Add("Assembly Name", assembly.FullName);
                     myException.Data.Add("Assignable Type", assignableType.FullName);
                     throw myException;
                 }
